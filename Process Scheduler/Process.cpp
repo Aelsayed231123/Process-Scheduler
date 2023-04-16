@@ -56,7 +56,7 @@ bool Process::CreateChild(int fp)
 {
 	bool Create = false;
 	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
+	double r = ((double)rand() / (RAND_MAX));
 	if (r >= fp)
 	{
 		Create = true;
@@ -74,8 +74,13 @@ bool Process::request_IO(int time)
 	mypair<int>curIO;
 	if (IOqueue.peek(curIO))
 	{
-		if (curIO.frist == t)
+		if (curIO.first == t)
 			request = true;
 	}
 	return request;
+}
+bool Process:: operator<=(Process P2)
+{
+	
+	return (CT <= P2.CT);
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include"Process.h"
 #include "Scheduler.h"
 #include "Process.h"
 enum CPUState{IDLE,BUSY};
