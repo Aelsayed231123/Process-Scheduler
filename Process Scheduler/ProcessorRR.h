@@ -12,6 +12,5 @@ public:
     ProcessorRR(Scheduler* psch, int time);
     void MovetoRDY(Process* P);
     void ScheduleAlgo();
-    
+    int getExpTime();
 };
-
