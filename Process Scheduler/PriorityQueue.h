@@ -75,5 +75,35 @@ public:
 		frntEntry = frontPtr->getItem();
 		return true;
 	}
+	~PriorityQueue()
+	{
+		T temp;
+
+		//Free (Dequeue) all nodes in the queue
+		while (dequeue(temp));
+	}
+	PriorityQueue(const PriorityQueue<T>& LQ)
+	{
+		Node<T>* NodePtr = LQ.frontPtr;
+		if (!NodePtr) //LQ is empty
+		{
+			frontPtr = backPtr = nullptr;
+			return;
+		}
+
+		//insert the first node
+		Node<T>* ptr = new Node<T>(NodePtr->getItem());
+		frontPtr = backPtr = ptr;
+		NodePtr = NodePtr->getNext();
+
+		//insert remaining nodes
+		while (NodePtr)
+		{
+			Node<T>* ptr = new Node<T>(NodePtr->getItem());
+			backPtr->setNext(ptr);
+			backPtr = ptr;
+			NodePtr = NodePtr->getNext();
+		}
+	}
 };
 

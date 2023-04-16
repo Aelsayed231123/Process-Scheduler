@@ -79,3 +79,8 @@ bool Process::request_IO(int time)
 	}
 	return request;
 }
+bool Process:: operator<=(Process P2)
+{
+	
+	return (CT <= P2.CT);
+}

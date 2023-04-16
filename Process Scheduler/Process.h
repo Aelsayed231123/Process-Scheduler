@@ -33,5 +33,6 @@ public:
 	bool CreateChild(int p);
 	void set_child(Process* c);
 	bool request_IO(int time);
+	bool operator<=(Process P2);
 };
 
