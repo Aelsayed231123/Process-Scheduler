@@ -1,8 +1,8 @@
-#pragma once
+#ifndef PROCESSOR_H
+#define PROCESSOR_H
 #include"Process.h"
-#include "Scheduler.h"
-#include "Process.h"
 enum CPUState{IDLE,BUSY};
+class Scheduler;
 class Processor
 {
 protected:
@@ -11,12 +11,29 @@ protected:
 	float pLoad, pUtil;
 	Process* RUN;
 public:
-	Processor(Scheduler * psch);
+	Processor::Processor(Scheduler* psch)
+{
+	pSch = psch;
+	State = IDLE;
+	pLoad = -1;
+	pUtil = -1;
+	RUN = nullptr;
+}
 	virtual void ScheduleAlgo() = 0;
 	virtual int getExpTime() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
-	Process* getRUN();
-	float getpLoad();
-	float getpUtil();
+	
+	Process* getRUN()
+{
+	return RUN;
+}
+float getpLoad()
+{
+	return pLoad;
+}
+float getpUtil()
+{
+	return pUtil;
+}
 };
-
+#endif
