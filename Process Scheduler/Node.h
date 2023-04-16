@@ -1,4 +1,13 @@
-#pragma once
+#ifndef queue
+#define queue
+
+
+template < class T>
+struct mypair
+{
+	T first;
+	T second;
+};
 template<class T>
 class Node
 {
@@ -24,6 +33,7 @@ public:
 	{
 		item = r_Item;
 	}
+
 	void setNext(Node<T>* nextNodePtr)
 	{
 		next = nextNodePtr;
@@ -37,3 +47,4 @@ public:
 		return next;
 	}
 };
+#endif
