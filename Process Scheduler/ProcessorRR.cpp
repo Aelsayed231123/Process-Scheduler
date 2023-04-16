@@ -17,3 +17,7 @@ void ProcessorRR::ScheduleAlgo()
 	RDY.dequeue(Pr);
 	RUN = Pr;
 }
+int ProcessorRR::getExpTime()
+{
+	return 0;
+}
