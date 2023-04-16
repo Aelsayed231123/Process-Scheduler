@@ -137,6 +137,7 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LinkedQueue.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="ProcessorFCFS.h" />
