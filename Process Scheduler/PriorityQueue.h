@@ -27,22 +27,21 @@ public:
 			{
 				if (temp->getItem() <= ptr->getItem())
 				{
-					if (!pre)
-					{
-						temp->setNext(ptr);
-						frontPtr = temp;
-						backPtr = ptr;
-						break;
-					}
-					else
-					{
-						temp->setNext(ptr);
-						pre->setNext(temp);
-						break;
-					}
+					break;
 				}
 				pre = ptr;
 				ptr = ptr->getNext();
+			}
+			if (!pre)
+			{
+				temp->setNext(ptr);
+				frontPtr = temp;
+				backPtr = ptr;
+			}
+			else
+			{
+				temp->setNext(ptr);
+				pre->setNext(temp);
 			}
 		}
 	}

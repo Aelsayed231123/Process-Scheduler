@@ -1,5 +1,6 @@
 #pragma once
 #include"LinkedQueue.h"
+#include"PriorityQueue.h"
 template<class T>
 struct mypair
 {

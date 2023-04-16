@@ -1,5 +1,5 @@
-
-template < class T>
+#pragma once
+template<class T>
 class Node
 {
 private:
@@ -24,7 +24,6 @@ public:
 	{
 		item = r_Item;
 	}
-
 	void setNext(Node<T>* nextNodePtr)
 	{
 		next = nextNodePtr;
@@ -38,4 +37,3 @@ public:
 		return next;
 	}
 };
-
