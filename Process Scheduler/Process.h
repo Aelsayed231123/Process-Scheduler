@@ -3,7 +3,7 @@
 template<class T>
 struct mypair
 {
-	T frist;
+	T first;
 	T second;
 };
 class Process

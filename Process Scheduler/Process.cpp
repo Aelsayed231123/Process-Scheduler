@@ -74,7 +74,7 @@ bool Process::request_IO(int time)
 	mypair<int>curIO;
 	if (IOqueue.peek(curIO))
 	{
-		if (curIO.frist == t)
+		if (curIO.first == t)
 			request = true;
 	}
 	return request;
