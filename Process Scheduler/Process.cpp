@@ -24,6 +24,10 @@ void Process::set_TT(int terT)
 	TRT = TT - AT;
 	WT = TRT - CT;
 }
+int Process::get_ID()
+{
+	return pID;
+}
 int Process::get_AT()
 {
 	return AT;
