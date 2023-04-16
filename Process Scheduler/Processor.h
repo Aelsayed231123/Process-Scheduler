@@ -1,4 +1,5 @@
 #pragma once
+#include"Process.h"
 #include "Scheduler.h"
 enum CPUState{IDLE,BUSY};
 class Processor
@@ -8,7 +9,7 @@ private:
 	enum CPUState State;
 	float pLoad, pUtil;
 	int ExpectedTime;
-	Processor* RUN;
+	Process* RUN;
 public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;

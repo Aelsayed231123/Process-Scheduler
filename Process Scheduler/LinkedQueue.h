@@ -1,9 +1,6 @@
 
-
 #include "Node.h"
 using namespace std;
-
-
 template <typename T>
 class LinkedQueue
 {

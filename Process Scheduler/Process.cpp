@@ -56,7 +56,7 @@ bool Process::CreateChild(int fp)
 {
 	bool Create = false;
 	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
+	double r = ((double)rand() / (RAND_MAX));
 	if (r >= fp)
 	{
 		Create = true;
