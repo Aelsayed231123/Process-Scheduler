@@ -1,5 +1,17 @@
-#include "Processor.h"
-Processor::Processor(Scheduler* psch)
+#ifndef PROCESSOR_H
+#define PROCESSOR_H
+#include"Process.h"
+enum CPUState{IDLE,BUSY};
+class Scheduler;
+class Processor
+{
+protected:
+	Scheduler* pSch;
+	enum CPUState State;
+	float pLoad, pUtil;
+	Process* RUN;
+public:
+	Processor::Processor(Scheduler* psch)
 {
 	pSch = psch;
 	State = IDLE;
@@ -7,16 +19,21 @@ Processor::Processor(Scheduler* psch)
 	pUtil = -1;
 	RUN = nullptr;
 }
-Process* Processor::getRUN()
+	virtual void ScheduleAlgo() = 0;
+	virtual int getExpTime() = 0;
+	virtual void MovetoRDY(Process* P) = 0;
+	
+	Process* getRUN()
 {
 	return RUN;
 }
-float Processor::getpLoad()
+float getpLoad()
 {
 	return pLoad;
 }
-float Processor::getpUtil()
+float getpUtil()
 {
 	return pUtil;
 }
-
+};
+#endif
