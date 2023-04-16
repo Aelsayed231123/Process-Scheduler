@@ -1,4 +1,7 @@
-#include"Node.h"
+#ifndef node
+#define node
+#include "Node.h"
+using namespace std;
 template <class T>
 class LinkedQueue
 {
@@ -84,4 +87,5 @@ public:
 				NodePtr = NodePtr->getNext();
 			}
 		}
-	};
+};
+#endif
