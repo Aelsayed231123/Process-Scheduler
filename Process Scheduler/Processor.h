@@ -1,19 +1,20 @@
 #pragma once
 #include "Scheduler.h"
+#include "Process.h"
 enum CPUState{IDLE,BUSY};
 class Processor
 {
-private:
+protected:
 	Scheduler* pSch;
 	enum CPUState State;
 	float pLoad, pUtil;
-	int ExpectedTime;
-	Processor* RUN;
+	Process* RUN;
 public:
-	Processor(Scheduler* psch);
+	Processor(Scheduler * psch);
 	virtual void ScheduleAlgo() = 0;
-	int getExpTime();
-	Processor* getRUN();
+	virtual int getExpTime() = 0;
+	virtual void MovetoRDY(Process* P) = 0;
+	Process* getRUN();
 	float getpLoad();
 	float getpUtil();
 };

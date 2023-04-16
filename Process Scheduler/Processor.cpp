@@ -2,12 +2,12 @@
 Processor::Processor(Scheduler* psch)
 {
 	pSch = psch;
+	State = IDLE;
+	pLoad = -1;
+	pUtil = -1;
+	RUN = nullptr;
 }
-int Processor:: getExpTime()
-{
-	return ExpectedTime;
-}
-Processor* Processor::getRUN()
+Process* Processor::getRUN()
 {
 	return RUN;
 }
