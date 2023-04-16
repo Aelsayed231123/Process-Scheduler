@@ -14,7 +14,7 @@ public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	int getExpTime();
-	Processor* getRUN();
+	Process* getRUN();
 	float getpLoad();
 	float getpUtil();
 };

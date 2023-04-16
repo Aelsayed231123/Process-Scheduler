@@ -7,7 +7,7 @@ int Processor:: getExpTime()
 {
 	return ExpectedTime;
 }
-Processor* Processor::getRUN()
+Process* Processor::getRUN()
 {
 	return RUN;
 }
