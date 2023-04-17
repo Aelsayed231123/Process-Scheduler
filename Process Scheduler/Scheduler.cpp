@@ -22,12 +22,49 @@ void Scheduler::Simulate()
 	while (TerminatedSize < num_processes)
 	{
 
+		Schedule();
+		int Random = (rand() % (100 - 1 + 1)) + 1;
+		if (Random >= 1 && Random <= 15)
+		{
+
+		}
+		else if (Random >= 20 && Random <= 30)
+		{
+
+		}
+		else if (Random >= 50 && Random <= 60)
+		{
+
+		}
+
 		TimeStep++;
+		
 	}
 }
 void Scheduler::Schedule()
 {
-
+	/// <summary>
+		/// for(int i=0;i<num_FCFS+num_RR+num_SJF;i++)
+		/// {
+		///		Process* P
+		///		New.peak(P)
+		///		if(p.get_AT()==TimeStep)
+		///		{
+		///		ProcessorList[i]->MovetoRDY(P);
+		///		New.dequeue(p);
+		///		}
+		///		else
+		///		{
+		/// break;
+		/// }
+		/// 
+		/// }
+		/// for(int i=0;i<num_FCFS+num_RR+num_SJF;i++)
+		/// {
+		///		ProcessorList[i]->ScheduleAlgo();
+		/// }
+		/// 
+		/// </summary>
 }
 void Scheduler::LoadInputs()
 {
@@ -81,4 +118,8 @@ void Scheduler::Terminate(Process* P)
 {
 	Terminated.enqueue(P);
 	TerminatedSize++;
+}
+int Scheduler::getTime()
+{
+	return TimeStep;
 }

@@ -10,7 +10,7 @@ void ProcessorSJF::MovetoRDY(Process* P)
 }
 void ProcessorSJF::ScheduleAlgo()
 {
-	if (isBusy())
+	if (isBusy() || Ready.isEmpty())
 	{
 		return;
 	}

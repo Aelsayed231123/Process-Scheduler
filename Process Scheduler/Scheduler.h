@@ -13,6 +13,7 @@ private:
 	LinkedQueue<mypair<int,int>> sigKILL;
 	Process**process_ptr;
 	ProcessorRR**processor_RR_ptr;
+	LinkedQueue<Process*>NEW;
 	LinkedQueue<Process*>BLKlist;
 	LinkedQueue<Process*>Terminated;
 	int TimeStep;
@@ -25,5 +26,6 @@ public:
 	void LoadInputs();
 	void movetoBLK(Process*P);
 	void Terminate(Process* P);
+	int getTime();
 };
 #endif

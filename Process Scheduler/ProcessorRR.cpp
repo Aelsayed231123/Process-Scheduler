@@ -6,7 +6,7 @@ ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 }
 void ProcessorRR::ScheduleAlgo()
 {
-	if (State == BUSY)
+	if (State == BUSY || RDY.isEmpty())
 	{
 		return;
 	}
