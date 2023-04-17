@@ -15,9 +15,13 @@ private:
 	ProcessorRR**processor_RR_ptr;
 	LinkedQueue<Process*>BLKlist;
 	LinkedQueue<Process*>Terminated;
+	int TimeStep;
+	int TerminatedSize;
 	
 public:
 	Scheduler();
+	void Simulate();
+	void Schedule();
 	void LoadInputs();
 	void movetoBLK(Process*P);
 	void Terminate(Process* P);
