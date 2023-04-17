@@ -24,19 +24,27 @@ void Scheduler::Simulate()
 
 		Schedule();
 		int Random = (rand() % (100 - 1 + 1)) + 1;
-		if (Random >= 1 && Random <= 15)
+		/*for (int i = 0;i < num_FCFS + num_RR + num_SJF;i++)
 		{
-
-		}
-		else if (Random >= 20 && Random <= 30)
-		{
-
-		}
-		else if (Random >= 50 && Random <= 60)
-		{
-
-		}
-
+			if(ProcessorList[i]->isBusy())
+			}
+				if (Random >= 1 && Random <= 15)
+				{
+					MovetoBLK(ProcessorList[i]->getRUN();
+				}
+				else if (Random >= 20 && Random <= 30)
+				{
+					ProcessorList[i]->MovetoRDY(ProcessorList[i]->getRUN());
+				}
+				else if (Random >= 50 && Random <= 60)
+				{
+					Terminate(ProcessorList[i]->getRUN();
+				}
+			}
+			else{
+			break;
+			}
+		}*/
 		TimeStep++;
 		
 	}
