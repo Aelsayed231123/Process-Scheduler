@@ -19,7 +19,7 @@ class Process
 	Process* Parptr;
 	Process* Childptr;
 public:
-	Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P);
+	Process(int id, int arrT=0, int cpuT=0, int n=0, mypair<int,int>* P=nullptr);
 	void set_RT(int runT);
 	void set_TT(int terT);
 	int get_ID();
@@ -32,5 +32,9 @@ public:
 	bool CreateChild(int p);
 	void set_child(Process* c);
 	bool request_IO(int time);
+	bool operator==(Process P)
+	{
+
+	}
 };
 #endif

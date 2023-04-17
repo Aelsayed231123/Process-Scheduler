@@ -17,11 +17,12 @@ public:
 	virtual void MovetoRDY(Process* P) = 0;
 	virtual void MovetoBLK(Process* P) = 0;
 	virtual void Terminate(Process* P) = 0;
-	bool MovetoRun(Process* P);
+	virtual bool MovetoRun(Process* P) = 0;
 	int getExpTime();
 	Process* getRUN();
 	float getpLoad();
 	float getpUtil();
 	bool isBusy();
+	bool operator==(Process P);
 };
 #endif

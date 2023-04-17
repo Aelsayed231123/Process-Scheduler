@@ -116,10 +116,15 @@ void Scheduler::movetoBLK(Process* P)
 }
 void Scheduler::Terminate(Process* P)
 {
+	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
 	TerminatedSize++;
 }
-int Scheduler::getTime()
+void Scheduler::movetoRDY(Process* p,Processor* pu)
+{
+	pu->MovetoRDY(p);
+}
+int Scheduler::get_time_step()
 {
 	return TimeStep;
 }

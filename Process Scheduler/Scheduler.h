@@ -26,6 +26,7 @@ public:
 	void LoadInputs();
 	void movetoBLK(Process*P);
 	void Terminate(Process* P);
-	int getTime();
+	void movetoRDY(Process*P,Processor* Pr);
+	int get_time_step();
 };
 #endif
