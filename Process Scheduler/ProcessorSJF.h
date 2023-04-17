@@ -8,8 +8,5 @@ public:
 	ProcessorSJF(Scheduler* pS);
 	void MovetoRDY(Process* P);
 	void ScheduleAlgo();
-	void MovetoRun(Process* P);
-	void MovetoBLK(Process* P);
-	void Terminate(Process* P);
 };
 

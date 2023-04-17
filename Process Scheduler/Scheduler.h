@@ -13,9 +13,12 @@ private:
 	LinkedQueue<mypair<int,int>> sigKILL;
 	Process**process_ptr;
 	ProcessorRR**processor_RR_ptr;
+	LinkedQueue<Process*>BLK;
+	LinkedQueue<Process*>Terminated;
 	
 public:
 	Scheduler();
 	void LoadInputs();
+
 };
 #endif

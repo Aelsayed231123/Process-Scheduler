@@ -28,3 +28,23 @@ bool Processor::isBusy()
 {
 	return(State == BUSY);
 }
+void  Processor::MovetoBLK(Process* P)
+{
+	//pSch->
+	ExpTime -= P->get_CT();
+}
+void  Processor::Terminate(Process* P)
+{
+	//pSch->
+	ExpTime -= P->get_CT();
+}
+bool  Processor::MovetoRun(Process* P)
+{
+	if (State==IDLE)
+	{
+		RUN = P;
+		State = BUSY;
+		return true;
+	}
+	return false;
+}

@@ -17,18 +17,3 @@ void ProcessorSJF::ScheduleAlgo()
 	Ready.dequeue(Pr);
 	MovetoRun(Pr);
 }
-void ProcessorSJF::MovetoRun(Process* P)
-{
-	RUN = P;
-	State = BUSY;
-}
-void ProcessorSJF::MovetoBLK(Process* P)
-{
-	//pSch->
-	ExpTime -= P->get_CT();
-}
-void ProcessorSJF::Terminate(Process* P)
-{
-	//pSch->
-	ExpTime -= P->get_CT();
-}

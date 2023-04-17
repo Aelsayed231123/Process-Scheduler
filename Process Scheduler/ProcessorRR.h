@@ -11,9 +11,6 @@ private:
 public:
 	ProcessorRR(Scheduler* psch, int time);
 	void MovetoRDY(Process* P);
-	void MovetoRun(Process* P);
-	void MovetoBLK(Process* P);
-	void Terminate(Process* P);
 	void ScheduleAlgo();
 	int getExpTime();
 };
