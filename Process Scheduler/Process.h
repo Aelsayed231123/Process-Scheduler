@@ -1,5 +1,7 @@
-#pragma once
-#include"pair.h"
+#ifndef PROCESS
+#define PROCESS
+
+
 #include"LinkedQueue.h"
 #include"PriorityQueue.h"
 
@@ -30,6 +32,5 @@ public:
 	bool CreateChild(int p);
 	void set_child(Process* c);
 	bool request_IO(int time);
-	bool operator<=(Process P2);
 };
-
+#endif

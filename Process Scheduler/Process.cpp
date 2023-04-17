@@ -56,7 +56,7 @@ bool Process::CreateChild(int fp)
 {
 	bool Create = false;
 	srand((unsigned)time(NULL));
-	double r = ((double)rand() / (RAND_MAX));
+	float r = ((double)rand() / (RAND_MAX));
 	if (r >= fp)
 	{
 		Create = true;
@@ -78,9 +78,4 @@ bool Process::request_IO(int time)
 			request = true;
 	}
 	return request;
-}
-bool Process:: operator<=(Process P2)
-{
-	
-	return (CT <= P2.CT);
 }

@@ -5,6 +5,7 @@
 Scheduler::Scheduler()
 {
 	process_ptr=nullptr;
+	processor_RR_ptr=nullptr;
 	num_FCFS=0;
 	num_RR=0;
 	num_SJF=0;
@@ -20,6 +21,12 @@ void Scheduler::LoadInputs()
 	finput>>num_FCFS>>num_SJF>>num_RR;
 	int time_slice;
 	finput>>time_slice;
+	processor_RR_ptr=new ProcessorRR*[num_RR];
+	for(int i=0;i<num_RR;i++)
+	{
+		ProcessorRR*ptr_rr=new ProcessorRR(this,time_slice);
+		processor_RR_ptr[i]=ptr_rr;
+	}
 	////////////////////////////creating rr processors with timesclice as par in constructor
 	finput>>RTF>>MaxW>>STL>>ForkProb>>num_processes;
 	int loop_count=num_processes;
