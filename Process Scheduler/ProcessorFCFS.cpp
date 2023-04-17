@@ -5,7 +5,7 @@ ProcessorFCFS::ProcessorFCFS(Scheduler* psch): Processor(psch)
 }
 void ProcessorFCFS::MovetoRDY(Process* P)
 {
-	Ready.enqueue(P);
+	Ready.InsertEnd(P);
 	ExpTime += P->get_CT();
 }
 void ProcessorFCFS::ScheduleAlgo()
@@ -15,7 +15,7 @@ void ProcessorFCFS::ScheduleAlgo()
 		return;
 	}
 	Process* Pr;
-	Ready.dequeue(Pr);
+	Pr = Ready.GetFirst()->getItem();
 	MovetoRun(Pr);
 }
 void ProcessorFCFS::MovetoBLK(Process* P)
@@ -32,7 +32,7 @@ void ProcessorFCFS::Terminate(Process* P)
 	RUN = nullptr;
 	State = IDLE;
 }
-bool  ProcessorFCFS::MovetoRun(Process* P)
+bool ProcessorFCFS::MovetoRun(Process* P)
 {
 	if (State == IDLE)
 	{
@@ -40,6 +40,30 @@ bool  ProcessorFCFS::MovetoRun(Process* P)
 		State = BUSY;
 		P->set_RT(pSch->get_time_step());
 			return true;
+	}
+	return false;
+}
+bool ProcessorFCFS::Kill(int id)
+{
+	if (Ready.isEmpty())
+	{
+		return false;
+	}
+	Node<Process*>* ptr = Ready.get_head();
+	Process* p = nullptr;
+	while (ptr)
+	{
+		if (ptr->getItem()->get_ID() == id)
+		{
+			p = ptr->getItem();
+			break;
+		}
+		ptr = ptr->getNext();
+	}
+	if (p)
+	{
+		Terminate(p);
+		return true;
 	}
 	return false;
 }

@@ -1,9 +1,10 @@
 #pragma once
 #include "Processor.h"
+#include"LinkedList.h"
 class ProcessorFCFS :
     public Processor
 {
-    LinkedQueue<Process*>Ready;
+    LinkedList<Process*>Ready;
 public:
     ProcessorFCFS(Scheduler* psch);
 	void MovetoRDY(Process* P);
@@ -11,5 +12,6 @@ public:
 	void MovetoBLK(Process* P);
 	void Terminate(Process* P);
 	bool MovetoRun(Process* P);
+	bool Kill(int id);
 };
 

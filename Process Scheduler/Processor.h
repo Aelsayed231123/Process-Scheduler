@@ -23,5 +23,6 @@ public:
 	float getpLoad();
 	float getpUtil();
 	bool isBusy();
+	bool operator==(Process P);
 };
 #endif
