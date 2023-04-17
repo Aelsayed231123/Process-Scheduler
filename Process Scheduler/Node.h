@@ -28,7 +28,7 @@ public:
 	{
 		next = nextNodePtr;
 	}
-	T getItem() const
+	T & getItem() 
 	{
 		return item;
 	}

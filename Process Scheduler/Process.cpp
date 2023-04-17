@@ -1,7 +1,7 @@
 #include<iostream>
 #include<cstdlib>
 #include "Process.h"
-Process::Process(int id, int arrT, int cpuT, int n, mypair<int>* P) :pID(id), AT(arrT), CT(cpuT), N(n)
+Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id), AT(arrT), CT(cpuT), N(n)
 {
 	RT = -1;
 	TT = -1;
@@ -71,7 +71,7 @@ bool Process::request_IO(int time)
 {
 	int t = time - RT;
 	bool request = false;
-	mypair<int>curIO;
+	mypair<int,int>curIO;
 	if (IOqueue.peek(curIO))
 	{
 		if (curIO.first == t)

@@ -20,7 +20,7 @@ int main()
 	cin >> val;
 	while (val != -1)
 	{
-		P.enqueue(val);
+		P.enqueue(val,val);
 		cin >> val;
 	}
 	PrintQueue(P);

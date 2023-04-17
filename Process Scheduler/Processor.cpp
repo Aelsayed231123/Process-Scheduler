@@ -6,6 +6,7 @@ Processor::Processor(Scheduler* psch)
 	pLoad = -1;
 	pUtil = -1;
 	RUN = nullptr;
+	ExpTime = 0;
 }
 Process* Processor::getRUN()
 {
@@ -19,4 +20,11 @@ float Processor::getpUtil()
 {
 	return pUtil;
 }
-
+int Processor::getExpTime()
+{
+	return ExpTime;
+}
+bool Processor::isBusy()
+{
+	return(State == BUSY);
+}

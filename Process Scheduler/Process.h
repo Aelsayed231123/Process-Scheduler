@@ -1,12 +1,8 @@
 #pragma once
+#include"pair.h"
 #include"LinkedQueue.h"
 #include"PriorityQueue.h"
-template<class T>
-struct mypair
-{
-	T first;
-	T second;
-};
+
 class Process
 {
 	int pID;
@@ -17,11 +13,11 @@ class Process
 	int TRT;
 	int WT;
 	int N;
-	LinkedQueue<mypair<int>>IOqueue;
+	LinkedQueue<mypair<int,int>>IOqueue;
 	Process* Parptr;
 	Process* Childptr;
 public:
-	Process(int id, int arrT, int cpuT, int n, mypair<int>* P);
+	Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P);
 	void set_RT(int runT);
 	void set_TT(int terT);
 	int get_ID();

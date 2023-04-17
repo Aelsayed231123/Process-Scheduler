@@ -3,6 +3,6 @@
 #include "Processor.h"
 class ProcessorSJF : public Processor
 {
-	PriorityQueue<Process>Ready;
+	PriorityQueue<Process*>Ready;
 };
 

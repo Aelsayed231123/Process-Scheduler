@@ -1,4 +1,5 @@
 #include "Scheduler.h"
+#include"pair.h"
 #include<fstream>
 #include<string>
 Scheduler::Scheduler()
@@ -25,7 +26,7 @@ void Scheduler::LoadInputs()
 	process_ptr=new Process*[num_processes];
 	int index=0;
 	int Arrival_time,ID,CPU_time,n;
-	mypair<int>arr[100];
+	mypair<int,int>arr[100];
 	while(loop_count)
 	{
 		finput>>Arrival_time>>ID>>CPU_time>>n;
@@ -45,11 +46,10 @@ void Scheduler::LoadInputs()
 	}
 	while(!finput.eof())
 	{
-		mypair<int>sig;
+		mypair<int,int>sig;
 		finput>>sig.first>>sig.second;
 		sigKILL.enqueue(sig);
 		finput.ignore(100000000,'\n');
 	}
 }
-int main()
-{}
+

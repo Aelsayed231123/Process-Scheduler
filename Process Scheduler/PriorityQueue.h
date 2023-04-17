@@ -1,19 +1,23 @@
 #include"Node.h"
+#include"pair.h"
 template<class T>
 class PriorityQueue
 {
 private:
-	Node<T>* frontPtr;
-	Node<T>* backPtr;
+	Node<mypair<T,int>>* frontPtr;
+	Node<mypair<T,int>>* backPtr;
 public:
 	PriorityQueue()
 	{
 		frontPtr = nullptr;
 		backPtr = nullptr;
 	}
-	void enqueue(const T& newEntry)
+	void enqueue(const T& newEntry,int priority)
 	{
-		Node<T>* temp = new Node<T>(newEntry);
+		Node <mypair<T,int>>* temp = new Node<mypair<T,int>>;
+		temp->getItem().set_first(newEntry);
+		temp->getItem().set_second(priority);
+
 		if (isEmpty())
 		{
 			frontPtr = temp;
@@ -21,11 +25,11 @@ public:
 		}
 		else
 		{
-			Node<T>* pre = nullptr;
-			Node<T>* ptr = frontPtr;
+			Node<mypair<T,int>>* pre = nullptr;
+			Node<mypair<T,int>>* ptr = frontPtr;
 			while (ptr)
 			{
-				if (temp->getItem() <= ptr->getItem())
+				if ((temp->getItem()).second<=(ptr->getItem()).second)
 				{
 					break;
 				}
@@ -42,6 +46,8 @@ public:
 			{
 				temp->setNext(ptr);
 				pre->setNext(temp);
+				if (!ptr)
+					backPtr = temp;
 			}
 		}
 	}
@@ -54,8 +60,8 @@ public:
 		if (isEmpty())
 			return false;
 
-		Node<T>* nodeToDeletePtr = frontPtr;
-		frntEntry = frontPtr->getItem();
+		Node<mypair<T,int>>* nodeToDeletePtr = frontPtr;
+		frntEntry = (frontPtr->getItem()).first;
 		frontPtr = frontPtr->getNext();
 		// Queue is not empty; remove front
 		if (nodeToDeletePtr == backPtr)	 // Special case: last node in the queue
@@ -83,7 +89,7 @@ public:
 	}
 	PriorityQueue(const PriorityQueue<T>& LQ)
 	{
-		Node<T>* NodePtr = LQ.frontPtr;
+		Node<mypair<T,int>>* NodePtr = LQ.frontPtr;
 		if (!NodePtr) //LQ is empty
 		{
 			frontPtr = backPtr = nullptr;
@@ -91,14 +97,18 @@ public:
 		}
 
 		//insert the first node
-		Node<T>* ptr = new Node<T>(NodePtr->getItem());
+		Node<mypair<T,int>>* ptr = new Node<mypair<T,int>>;
+		ptr->getItem().set_first(NodePtr->getItem().first);
+		ptr->getItem().set_second(NodePtr->getItem().second);
 		frontPtr = backPtr = ptr;
 		NodePtr = NodePtr->getNext();
 
 		//insert remaining nodes
 		while (NodePtr)
 		{
-			Node<T>* ptr = new Node<T>(NodePtr->getItem());
+			Node<mypair<T,int>>* ptr = new Node<mypair<T,int>>;
+			ptr->getItem().set_first(NodePtr->getItem().first);
+			ptr->getItem().set_second(NodePtr->getItem().second);
 			backPtr->setNext(ptr);
 			backPtr = ptr;
 			NodePtr = NodePtr->getNext();
