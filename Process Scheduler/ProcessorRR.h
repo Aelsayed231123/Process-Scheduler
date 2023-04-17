@@ -13,4 +13,6 @@ public:
 	void MovetoRDY(Process* P);
 	void ScheduleAlgo();
 	int getExpTime();
+	void MovetoBLK(Process* P);
+	void Terminate(Process* P);
 };

@@ -25,7 +25,7 @@ void Scheduler::LoadInputs()
 	for(int i=0;i<num_RR;i++)
 	{
 		ProcessorRR*ptr_rr=new ProcessorRR(this,time_slice);
-		processor_RR_ptr[i]=ptr_rr;
+		*(processor_RR_ptr+i)=ptr_rr;
 	}
 	////////////////////////////creating rr processors with timesclice as par in constructor
 	finput>>RTF>>MaxW>>STL>>ForkProb>>num_processes;
@@ -59,4 +59,11 @@ void Scheduler::LoadInputs()
 		finput.ignore(100000000,'\n');
 	}
 }
-
+void Scheduler::movetoBLK(Process* P)
+{
+	BLKlist.enqueue(P);
+}
+void Scheduler::Terminate(Process* P)
+{
+	Terminated.enqueue(P);
+}

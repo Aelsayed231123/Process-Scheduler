@@ -1,8 +1,8 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
 #include"Process.h"
-enum CPUState { IDLE, BUSY };
 class Scheduler;
+enum CPUState { IDLE, BUSY };
 class Processor
 {
 protected:
@@ -15,8 +15,8 @@ public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
-	void MovetoBLK(Process* P);
-	void Terminate(Process* P);
+	virtual void MovetoBLK(Process* P) = 0;
+	virtual void Terminate(Process* P) = 0;
 	bool MovetoRun(Process* P);
 	int getExpTime();
 	Process* getRUN();
