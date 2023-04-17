@@ -12,14 +12,7 @@ protected:
 	Process* RUN;
 	int ExpTime;
 public:
-	Processor::Processor(Scheduler* psch)
-{
-	pSch = psch;
-	State = IDLE;
-	pLoad = -1;
-	pUtil = -1;
-	RUN = nullptr;
-}
+	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
 	virtual void MovetoRun(Process* P) = 0;

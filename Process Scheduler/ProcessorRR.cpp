@@ -3,11 +3,6 @@ ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 {
 	TimeSlice = time;
 }
-void ProcessorRR::MovetoRDY(Process* P)
-{
-	RDY.enqueue(P);
-	ExpTime += P->get_CT();
-}
 void ProcessorRR::ScheduleAlgo()
 {
 	if (State == BUSY)
@@ -21,4 +16,24 @@ void ProcessorRR::ScheduleAlgo()
 int ProcessorRR::getExpTime()
 {
 	return 0;
+}
+void ProcessorRR:: MovetoRDY(Process* P)
+{
+	RDY.enqueue(P);
+	ExpTime += P->get_CT();
+}
+void  ProcessorRR::MovetoRun(Process* P)
+{
+	RUN = P;
+	State = BUSY;
+}
+void  ProcessorRR::MovetoBLK(Process* P)
+{
+	//pSch->
+	ExpTime -= P->get_CT();
+}
+void  ProcessorRR::Terminate(Process* P)
+{
+	//pSch->
+	ExpTime -= P->get_CT();
 }

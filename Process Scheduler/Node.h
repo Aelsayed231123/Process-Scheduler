@@ -1,13 +1,6 @@
 #ifndef queue
 #define queue
-
-
-template < class T>
-struct mypair
-{
-	T first;
-	T second;
-};
+#include"pair.h"
 template<class T>
 class Node
 {
