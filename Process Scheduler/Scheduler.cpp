@@ -67,3 +67,8 @@ void Scheduler::Terminate(Process* P)
 {
 	Terminated.enqueue(P);
 }
+void Scheduler::movetoRDY(Process* p,Processor* pu,int time)
+{
+	pu->MovetoRDY(p);
+
+}

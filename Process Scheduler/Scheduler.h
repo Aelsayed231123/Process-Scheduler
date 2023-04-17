@@ -21,5 +21,6 @@ public:
 	void LoadInputs();
 	void movetoBLK(Process*P);
 	void Terminate(Process* P);
+	void movetoRDY(Process*P,Processor* Pr,int time);
 };
 #endif
