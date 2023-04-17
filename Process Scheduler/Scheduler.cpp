@@ -14,6 +14,20 @@ Scheduler::Scheduler()
 	STL=0;
 	ForkProb=0;
 	num_processes=0;
+	TimeStep = 1;
+	TerminatedSize = 0;
+}
+void Scheduler::Simulate()
+{
+	while (TerminatedSize < num_processes)
+	{
+
+		TimeStep++;
+	}
+}
+void Scheduler::Schedule()
+{
+
 }
 void Scheduler::LoadInputs()
 {
@@ -66,6 +80,7 @@ void Scheduler::movetoBLK(Process* P)
 void Scheduler::Terminate(Process* P)
 {
 	Terminated.enqueue(P);
+	TerminatedSize++;
 }
 void Scheduler::movetoRDY(Process* p,Processor* pu,int time)
 {
