@@ -16,6 +16,7 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 }
 void Process::set_RT(int readyT)
 {
+	if(RT==-1)
 	RT = readyT - AT;
 }
 void Process::set_TT(int terT)

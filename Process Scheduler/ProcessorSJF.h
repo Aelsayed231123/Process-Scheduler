@@ -10,5 +10,6 @@ public:
 	void ScheduleAlgo();
 	void MovetoBLK(Process* P);
 	void Terminate(Process* P);
+	bool MovetoRun(Process* P);
 };
 

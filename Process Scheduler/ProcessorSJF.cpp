@@ -32,3 +32,14 @@ void  ProcessorSJF::Terminate(Process* P)
 	RUN = nullptr;
 	State = IDLE;
 }
+bool  ProcessorSJF::MovetoRun(Process* P)
+{
+	if (State == IDLE)
+	{
+		RUN = P;
+		State = BUSY;
+		P->set_RT(pSch->get_time_step());
+			return true;
+	}
+	return false;
+}
