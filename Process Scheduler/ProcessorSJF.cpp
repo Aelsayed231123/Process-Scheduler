@@ -1,11 +1,11 @@
 #include "ProcessorSJF.h"
 ProcessorSJF::ProcessorSJF(Scheduler* pS):Processor(pS)
 {
-
 }
 void ProcessorSJF::MovetoRDY(Process* P)
 {
 	Ready.enqueue(P,P->get_CT());
+	ExpTime += P->get_CT();
 }
 void ProcessorSJF::ScheduleAlgo()
 {
@@ -24,9 +24,11 @@ void ProcessorSJF::MovetoRun(Process* P)
 }
 void ProcessorSJF::MovetoBLK(Process* P)
 {
-
+	//pSch->
+	ExpTime -= P->get_CT();
 }
 void ProcessorSJF::Terminate(Process* P)
 {
-
+	//pSch->
+	ExpTime -= P->get_CT();
 }

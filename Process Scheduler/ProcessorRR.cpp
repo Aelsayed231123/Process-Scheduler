@@ -6,6 +6,7 @@ ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 void ProcessorRR::MovetoRDY(Process* P)
 {
 	RDY.enqueue(P);
+	ExpTime += P->get_CT();
 }
 void ProcessorRR::ScheduleAlgo()
 {
