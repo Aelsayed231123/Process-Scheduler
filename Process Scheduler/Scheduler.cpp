@@ -31,14 +31,18 @@ void Scheduler::Simulate()
 				if (Random >= 1 && Random <= 15)
 				{
 					MovetoBLK(ProcessorList[i]->getRUN();
+					//clear run of processor
 				}
 				else if (Random >= 20 && Random <= 30)
 				{
 					ProcessorList[i]->MovetoRDY(ProcessorList[i]->getRUN());
+					//clear run of processor
+
 				}
 				else if (Random >= 50 && Random <= 60)
 				{
 					Terminate(ProcessorList[i]->getRUN();
+					//clear run of processor
 				}
 			}
 			else{
