@@ -7,16 +7,16 @@
 #include"ProcessorRR.h"
 Scheduler::Scheduler()
 {
-	process_ptr=nullptr;
+	process_ptr = nullptr;
 	Processor_ptr = nullptr;
-	num_FCFS=0;
-	num_RR=0;
-	num_SJF=0;
-	RTF=0;
-	MaxW=0;
-	STL=0;
-	ForkProb=0;
-	num_processes=0;
+	num_FCFS = 0;
+	num_RR = 0;
+	num_SJF = 0;
+	RTF = 0;
+	MaxW = 0;
+	STL = 0;
+	ForkProb = 0;
+	num_processes = 0;
 	TimeStep = 1;
 	TerminatedSize = 0;
 }
@@ -27,9 +27,9 @@ void Scheduler::Simulate()
 
 		Schedule();
 		int Random = (rand() % (100 - 1 + 1)) + 1;
-		for (int i = 0;i < num_FCFS + num_RR + num_SJF;i++)
+		for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
 		{
-			if(Processor_ptr[i]->isBusy())
+			if (Processor_ptr[i]->isBusy())
 			{
 				if (Random >= 1 && Random <= 15)
 				{
@@ -48,46 +48,46 @@ void Scheduler::Simulate()
 					//clear run of processor
 				}
 			}
-			else{
-			break;
+			else {
+				break;
 			}
 		}
 		TimeStep++;
-		
+
 	}
 }
 void Scheduler::Schedule()
 {
-	/// <summary>
-		/// for(int i=0;i<num_FCFS+num_RR+num_SJF;i++)
-		/// {
-		///		Process* P
-		///		New.peak(P)
-		///		if(p.get_AT()==TimeStep)
-		///		{
-		///		ProcessorList[i]->MovetoRDY(P);
-		///		New.dequeue(p);
-		///		}
-		///		else
-		///		{
-		/// break;
-		/// }
-		/// 
-		/// }
-		/// for(int i=0;i<num_FCFS+num_RR+num_SJF;i++)
-		/// {
-		///		ProcessorList[i]->ScheduleAlgo();
-		/// }
-		/// 
-		/// </summary>
+
+	for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
+	{
+		Process* P;
+			NEW.peek(P);
+			if (P->get_AT() == TimeStep)
+			{
+				Processor_ptr[i]->MovetoRDY(P);
+				NEW.dequeue(P);
+			}
+			else
+			{
+				break;
+			}
+
+	}
+	for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
+	{
+		Processor_ptr[i]->ScheduleAlgo();
+	}
+
+
 }
 void Scheduler::LoadInputs()
 {
-	ifstream finput("f1.txt",ios::in);
-	finput>>num_FCFS>>num_SJF>>num_RR;
+	ifstream finput("f1.txt", ios::in);
+	finput >> num_FCFS >> num_SJF >> num_RR;
 	int time_slice;
-	finput>>time_slice;
-	Processor_ptr = new Processor*[num_FCFS + num_FCFS + num_RR];
+	finput >> time_slice;
+	Processor_ptr = new Processor * [num_FCFS + num_FCFS + num_RR];
 	int i = 0;
 	for (; i < num_RR; i++)
 	{
@@ -97,40 +97,40 @@ void Scheduler::LoadInputs()
 	{
 		Processor_ptr[i] = new ProcessorSJF(this);
 	}
-	 for (; i < num_SJF + num_RR + num_FCFS; i++)
+	for (; i < num_SJF + num_RR + num_FCFS; i++)
 	{
 		Processor_ptr[i] = new ProcessorFCFS(this);
 	}
 	////////////////////////////creating rr processors with timesclice as par in constructor
-	finput>>RTF>>MaxW>>STL>>ForkProb>>num_processes;
-	int loop_count=num_processes;
-	process_ptr=new Process*[num_processes];
-	int index=0;
-	int Arrival_time,ID,CPU_time,n;
-	mypair<int,int>arr[100];
-	while(loop_count)
+	finput >> RTF >> MaxW >> STL >> ForkProb >> num_processes;
+	int loop_count = num_processes;
+	process_ptr = new Process * [num_processes];
+	int index = 0;
+	int Arrival_time, ID, CPU_time, n;
+	mypair<int, int>arr[100];
+	while (loop_count)
 	{
-		finput>>Arrival_time>>ID>>CPU_time>>n;
-		for(int i=0;i<n;i++)
+		finput >> Arrival_time >> ID >> CPU_time >> n;
+		for (int i = 0; i < n; i++)
 		{
-			finput.ignore(100,'(');
-			finput>>arr[i].first;
-			finput.ignore(100,',');
-			finput>>arr[i].second;
+			finput.ignore(100, '(');
+			finput >> arr[i].first;
+			finput.ignore(100, ',');
+			finput >> arr[i].second;
 		}
-			Process*ptr=new Process(ID,Arrival_time,CPU_time,n,arr);
-			process_ptr[index]=ptr;
+		Process* ptr = new Process(ID, Arrival_time, CPU_time, n, arr);
+		process_ptr[index] = ptr;
 		//////////intantaie process with constructor,setting pairs
-		finput.ignore(10000000000,'\n');
+		finput.ignore(10000000000, '\n');
 		index++;
 		loop_count--;
 	}
-	while(!finput.eof())
+	while (!finput.eof())
 	{
-		mypair<int,int>sig;
-		finput>>sig.first>>sig.second;
+		mypair<int, int>sig;
+		finput >> sig.first >> sig.second;
 		sigKILL.enqueue(sig);
-		finput.ignore(100000000,'\n');
+		finput.ignore(100000000, '\n');
 	}
 }
 void Scheduler::movetoBLK(Processor* Pr)
@@ -143,7 +143,7 @@ void Scheduler::Terminate(Process* P)
 	Terminated.enqueue(P);
 	TerminatedSize++;
 }
-void Scheduler::movetoRDY(Process* p,Processor* pu)
+void Scheduler::movetoRDY(Process* p, Processor* pu)
 {
 	pu->MovetoRDY(p);
 }
