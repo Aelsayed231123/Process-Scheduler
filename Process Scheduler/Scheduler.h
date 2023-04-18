@@ -12,7 +12,7 @@ private:
 	int num_FCFS,num_RR,num_SJF,RTF,MaxW,STL,ForkProb,num_processes;
 	LinkedQueue<mypair<int,int>> sigKILL;
 	Process**process_ptr;
-	ProcessorRR**processor_RR_ptr;
+	Processor**Processor_ptr;
 	LinkedQueue<Process*>NEW;
 	LinkedQueue<Process*>BLKlist;
 	LinkedQueue<Process*>Terminated;
@@ -24,7 +24,7 @@ public:
 	void Simulate();
 	void Schedule();
 	void LoadInputs();
-	void movetoBLK(Process*P);
+	void movetoBLK(Processor*Pr);
 	void Terminate(Process* P);
 	void movetoRDY(Process*P,Processor* Pr);
 	int get_time_step();

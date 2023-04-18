@@ -2,10 +2,13 @@
 #include"pair.h"
 #include<fstream>
 #include<string>
+#include"ProcessorFCFS.h"
+#include"ProcessorSJF.h"
+#include"ProcessorRR.h"
 Scheduler::Scheduler()
 {
 	process_ptr=nullptr;
-	processor_RR_ptr=nullptr;
+	Processor_ptr = nullptr;
 	num_FCFS=0;
 	num_RR=0;
 	num_SJF=0;
@@ -24,31 +27,31 @@ void Scheduler::Simulate()
 
 		Schedule();
 		int Random = (rand() % (100 - 1 + 1)) + 1;
-		/*for (int i = 0;i < num_FCFS + num_RR + num_SJF;i++)
+		for (int i = 0;i < num_FCFS + num_RR + num_SJF;i++)
 		{
-			if(ProcessorList[i]->isBusy())
-			}
+			if(Processor_ptr[i]->isBusy())
+			{
 				if (Random >= 1 && Random <= 15)
 				{
-					MovetoBLK(ProcessorList[i]->getRUN();
+					movetoBLK(Processor_ptr[i]);
 					//clear run of processor
 				}
 				else if (Random >= 20 && Random <= 30)
 				{
-					ProcessorList[i]->MovetoRDY(ProcessorList[i]->getRUN());
+					Processor_ptr[i]->MovetoRDY(Processor_ptr[i]->getRUN());
 					//clear run of processor
 
 				}
 				else if (Random >= 50 && Random <= 60)
 				{
-					Terminate(ProcessorList[i]->getRUN();
+					Terminate(Processor_ptr[i]->getRUN());
 					//clear run of processor
 				}
 			}
 			else{
 			break;
 			}
-		}*/
+		}
 		TimeStep++;
 		
 	}
@@ -84,11 +87,19 @@ void Scheduler::LoadInputs()
 	finput>>num_FCFS>>num_SJF>>num_RR;
 	int time_slice;
 	finput>>time_slice;
-	processor_RR_ptr=new ProcessorRR*[num_RR];
-	for(int i=0;i<num_RR;i++)
+	Processor_ptr = new Processor*[num_FCFS + num_FCFS + num_RR];
+	int i = 0;
+	for (; i < num_RR; i++)
 	{
-		ProcessorRR*ptr_rr=new ProcessorRR(this,time_slice);
-		*(processor_RR_ptr+i)=ptr_rr;
+		Processor_ptr[i] = new ProcessorRR(this, time_slice);
+	}
+	for (; i < num_SJF + num_RR; i++)
+	{
+		Processor_ptr[i] = new ProcessorSJF(this);
+	}
+	 for (; i < num_SJF + num_RR + num_FCFS; i++)
+	{
+		Processor_ptr[i] = new ProcessorFCFS(this);
 	}
 	////////////////////////////creating rr processors with timesclice as par in constructor
 	finput>>RTF>>MaxW>>STL>>ForkProb>>num_processes;
@@ -122,9 +133,9 @@ void Scheduler::LoadInputs()
 		finput.ignore(100000000,'\n');
 	}
 }
-void Scheduler::movetoBLK(Process* P)
+void Scheduler::movetoBLK(Processor* Pr)
 {
-	BLKlist.enqueue(P);
+	BLKlist.enqueue(Pr->MovetoBLK());
 }
 void Scheduler::Terminate(Process* P)
 {

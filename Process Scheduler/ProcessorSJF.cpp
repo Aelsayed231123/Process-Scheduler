@@ -7,6 +7,11 @@ void ProcessorSJF::MovetoRDY(Process* P)
 {
 	Ready.enqueue(P,P->get_CT());
 	ExpTime += P->get_CT();
+	if (P == RUN)
+	{
+		RUN = nullptr;
+		State = IDLE;
+	}
 }
 void ProcessorSJF::ScheduleAlgo()
 {
@@ -18,12 +23,13 @@ void ProcessorSJF::ScheduleAlgo()
 	Ready.dequeue(Pr);
 	MovetoRun(Pr);
 }
-void  ProcessorSJF::MovetoBLK(Process* P)
+Process*  ProcessorSJF::MovetoBLK()
 {
-	pSch->movetoBLK(P);
-	ExpTime -= P->get_CT();
+	ExpTime -= RUN->get_CT();
+	Process* temp = RUN;
 	RUN = nullptr;
 	State = IDLE;
+	return temp;
 }
 void  ProcessorSJF::Terminate(Process* P)
 {

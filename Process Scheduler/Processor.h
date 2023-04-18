@@ -15,7 +15,7 @@ public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
-	virtual void MovetoBLK(Process* P) = 0;
+	virtual Process* MovetoBLK() = 0;
 	virtual void Terminate(Process* P) = 0;
 	virtual bool MovetoRun(Process* P) = 0;
 	int getExpTime();
@@ -23,6 +23,6 @@ public:
 	float getpLoad();
 	float getpUtil();
 	bool isBusy();
-	bool operator==(Process P);
+
 };
 #endif
