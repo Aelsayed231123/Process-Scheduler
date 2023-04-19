@@ -7,7 +7,6 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	TT = -1;
 	TRT = -1;
 	WT = -1;
-	Parptr = nullptr;
 	Childptr = nullptr;
 	for (int i = 0; i < N; i++)
 	{

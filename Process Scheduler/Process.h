@@ -16,7 +16,6 @@ class Process
 	int WT;
 	int N;
 	LinkedQueue<mypair<int,int>>IOqueue;
-	Process* Parptr;
 	Process* Childptr;
 public:
 	Process(int id, int arrT=0, int cpuT=0, int n=0, mypair<int,int>* P=nullptr);
