@@ -1,28 +1,16 @@
 #include <iostream>
+#include"LinkedList.h"
 #include"PriorityQueue.h"
+#include"Scheduler.h"
+#include"UI.h"
+#include"Process.h"
+#include"Processor.h"
+#include"ProcessorFCFS.h"
+#include"ProcessorSJF.h"
+#include"pair.h"
 using namespace std;
-template<class T>
-void PrintQueue(PriorityQueue<T> Q)
-{
-	T K;
-	while (Q.dequeue(K))
-	{
-		cout << K;
-		if (!Q.isEmpty())
-			cout << " ";
-	}
-	cout << endl;
-}
 int main()
 {
-	PriorityQueue<int>P;
-	int val;
-	cin >> val;
-	while (val != -1)
-	{
-		P.enqueue(val,val);
-		cin >> val;
-	}
-	PrintQueue(P);
-   return 0;
+	Scheduler ps;
+	ps.Simulate();
 }

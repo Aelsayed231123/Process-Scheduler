@@ -1,16 +1,21 @@
+#pragma once
 #include"Node.h"
 #include"pair.h"
+#include<iostream>
+using namespace std;
 template<class T>
 class PriorityQueue
 {
 private:
 	Node<mypair<T,int>>* frontPtr;
 	Node<mypair<T,int>>* backPtr;
+	int count;
 public:
 	PriorityQueue()
 	{
 		frontPtr = nullptr;
 		backPtr = nullptr;
+		count = 0;
 	}
 	void enqueue(const T& newEntry,int priority)
 	{
@@ -50,6 +55,7 @@ public:
 					backPtr = temp;
 			}
 		}
+		count++;
 	}
 	bool isEmpty() const
 	{
@@ -58,7 +64,10 @@ public:
 	bool dequeue(T& frntEntry)
 	{
 		if (isEmpty())
+		{
+			frntEntry = 0;
 			return false;
+		}
 
 		Node<mypair<T,int>>* nodeToDeletePtr = frontPtr;
 		frntEntry = (frontPtr->getItem()).first;
@@ -69,13 +78,16 @@ public:
 
 		// Free memory reserved for the dequeued node
 		delete nodeToDeletePtr;
-
+		count--;
 		return true;
 	}
 	bool peek(T& frntEntry)  const
 	{
 		if (isEmpty())
+		{
+			frntEntry = 0;
 			return false;
+		}
 
 		frntEntry = frontPtr->getItem();
 		return true;
@@ -113,6 +125,25 @@ public:
 			backPtr = ptr;
 			NodePtr = NodePtr->getNext();
 		}
+	}
+	void print()
+	{
+		if (frontPtr == nullptr)
+			return;
+		else
+		{
+			Node<mypair<T, int>>*ptr = frontPtr;
+			while (ptr)
+			{
+				cout << *(ptr->getItem().first) << " , ";
+				ptr = ptr->getNext();
+			}
+			cout << "\n";
+		}
+	}
+	int get_count()
+	{
+		return count;
 	}
 };
 

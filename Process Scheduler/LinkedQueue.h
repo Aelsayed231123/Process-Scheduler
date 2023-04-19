@@ -1,6 +1,7 @@
 #ifndef node
 #define node
 #include "Node.h"
+#include<iostream>
 using namespace std;
 template <class T>
 class LinkedQueue
@@ -8,11 +9,13 @@ class LinkedQueue
 private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
+	int count;
 public:
 	LinkedQueue()
 	{
 		backPtr = nullptr;
 		frontPtr = nullptr;
+		count = 0;
 	}
 
 	bool isEmpty() const
@@ -21,20 +24,26 @@ public:
 	}
 	bool enqueue(const T& newEntry)
 	{
-		Node<T>* newNodePtr = new Node<T>(newEntry);
+		Node<T>* newNodePtr = new Node<T>;
+		newNodePtr->setItem(newEntry);
 		// Insert the new node
 		if (isEmpty())	//special case if this is the first node to insert
 			frontPtr = newNodePtr; // The queue is empty
 		else
 			backPtr->setNext(newNodePtr); // The queue was not empty
 
-		backPtr = newNodePtr; // New node is the last node now
+		backPtr = newNodePtr;
+		count++;
+		// New node is the last node now
 		return true;
 	}
 	bool dequeue(T& frntEntry)
 	{
 		if (isEmpty())
+		{
+			frntEntry = 0;
 			return false;
+		}
 
 		Node<T>* nodeToDeletePtr = frontPtr;
 		frntEntry = frontPtr->getItem();
@@ -45,17 +54,18 @@ public:
 
 		// Free memory reserved for the dequeued node
 		delete nodeToDeletePtr;
-
+		count--;
 		return true;
 	}
 		bool peek(T & frntEntry)  const
 		{
 			if (isEmpty())
+			{
+				frntEntry = 0;
 				return false;
-
+			}
 			frntEntry = frontPtr->getItem();
 			return true;
-
 		}
 		~LinkedQueue()
 		{
@@ -85,6 +95,26 @@ public:
 				backPtr->setNext(ptr);
 				backPtr = ptr;
 				NodePtr = NodePtr->getNext();
+			}
+		}
+		int get_count()
+		{
+			return count;
+		}
+		void print()
+		{
+			if (frontPtr == nullptr)
+				return;
+			else
+			{
+				Node<T>*ptr = frontPtr;
+				while (ptr)
+				{
+
+					cout << *(ptr->getItem()) << " , ";
+					ptr = ptr->getNext();
+				}
+
 			}
 		}
 };

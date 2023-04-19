@@ -9,9 +9,9 @@ public:
     ProcessorFCFS(Scheduler* psch);
 	void MovetoRDY(Process* P);
 	void ScheduleAlgo();
-	Process* MovetoBLK();
-	void Terminate(Process* P);
-	bool MovetoRun(Process* P);
+	 Process* RemoveRun();
 	bool Kill(int id);
+	void print_RDY();
+	int get_countrdy();
 };
 

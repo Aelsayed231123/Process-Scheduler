@@ -13,7 +13,7 @@ public:
 	void MovetoRDY(Process* P);
 	void ScheduleAlgo();
 	int getExpTime();
-	Process* MovetoBLK();
-	void Terminate(Process* P);
-	bool MovetoRun(Process* P);
+	Process* RemoveRun();
+	void print_RDY();
+	int get_countrdy();
 };

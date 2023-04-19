@@ -9,34 +9,27 @@ class LinkedList
 {
 private:
 	Node<T>* Head;
+	Node<T>* Tail;
+	int count;
 public:
 	LinkedList()
 	{
 		Head = nullptr;
+		Tail = nullptr;
+		count = 0;
 	}
 	~LinkedList()
 	{
 		DeleteAll();
-	}
-	void PrintList()	const
-	{
-		Node<T>* p = Head;
-		while (p)
-		{
-			cout << p->getItem();
-			p = p->getNext();
-			if (p)
-				cout << " ";
-
-		}
-		cout << "NULL\n";
 	}
 	void InsertBeg(const T& data)
 	{
 		Node<T>* R = new Node<T>(data);
 		R->setNext(Head);
 		Head = R;
-
+		if (!Head->getNext())
+			Tail = Head;
+		count++;
 	}
 	void DeleteAll()
 	{
@@ -47,24 +40,24 @@ public:
 			delete Head;
 			Head = P;
 		}
+		count = 0;
 	}
 	void InsertEnd(const T& data)
 	{
 		Node<T>* newnode = new Node<T>;
 		newnode->setItem(data);
 		newnode->setNext(nullptr);
-		if (Head == 0)
+		if (!Head)
 		{
 			Head = newnode;
+			Tail = Head;
 		}
 		else
 		{
-			Node<T>* ptr = Head;
-			while (ptr->getNext())
-				ptr = ptr->getNext();
-			ptr->setNext(newnode);
-
+			Tail->setNext(newnode);
+			Tail = newnode;
 		}
+		count++;
 	}
 	bool Remove(T item)
 	{
@@ -74,6 +67,7 @@ public:
 		{
 			Head = Head->getNext();
 			delete prev;
+			count--;
 			return true;
 		}
 		else
@@ -83,6 +77,7 @@ public:
 				{
 					prev->setNext(ptr->getNext());
 					delete ptr;
+					count--;
 					return true;
 				}
 				prev = ptr;
@@ -106,6 +101,32 @@ public:
 	Node<T>* get_head()
 	{
 		return Head;
+	}
+	Node<T>* RemoveFirst()
+	{
+		if (Head != nullptr)
+		{
+			Node<T>* temp = Head;
+			Head = Head->getNext();
+			count--;
+			return temp;
+		}
+		return nullptr;
+	}
+	void PrintList()    const
+	{
+		Node<T>* p = Head;
+		while (p)
+		{
+			cout << *(p->getItem());
+			p = p->getNext();
+			if (p)
+				cout << " ";
+		}
+	}
+	int get_count()
+	{
+		return count;
 	}
 };
 

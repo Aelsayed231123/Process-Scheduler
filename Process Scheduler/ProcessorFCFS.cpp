@@ -1,16 +1,18 @@
 #include "ProcessorFCFS.h"
 #include"Scheduler.h"
+#include<iostream>
+using namespace std;
 ProcessorFCFS::ProcessorFCFS(Scheduler* psch): Processor(psch)
 {
 }
 void ProcessorFCFS::MovetoRDY(Process* P)
 {
-	
 	Ready.InsertEnd(P);
 	ExpTime += P->get_CT();
 	if (P == RUN)
 	{
 		RUN = nullptr;
+		BusyTime = 0;
 		State = IDLE;
 	}
 }
@@ -18,37 +20,26 @@ void ProcessorFCFS::ScheduleAlgo()
 {
 	if (isBusy())
 	{
+		BusyTime++;
 		return;
 	}
 	Process* Pr;
 	Pr = Ready.GetFirst()->getItem();
-	MovetoRun(Pr);
+	if (Pr)
+	{
+		RUN = Pr;
+		BusyTime = 1;
+		State = BUSY;
+	}
 }
-Process* ProcessorFCFS::MovetoBLK()
+Process* ProcessorFCFS::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
 	RUN = nullptr;
+	BusyTime = 0;
 	State = IDLE;
 	return temp;
-}
-void ProcessorFCFS::Terminate(Process* P)
-{
-	pSch->Terminate(P);
-	ExpTime -= P->get_CT();
-	RUN = nullptr;
-	State = IDLE;
-}
-bool ProcessorFCFS::MovetoRun(Process* P)
-{
-	if (State == IDLE)
-	{
-		RUN = P;
-		State = BUSY;
-		P->set_RT(pSch->get_time_step());
-			return true;
-	}
-	return false;
 }
 bool ProcessorFCFS::Kill(int id)
 {
@@ -69,8 +60,22 @@ bool ProcessorFCFS::Kill(int id)
 	}
 	if (p)
 	{
-		Terminate(p);
+		pSch->Terminate(this);
 		return true;
 	}
 	return false;
+}
+void ProcessorFCFS::print_RDY()
+{
+	Ready.PrintList();
+}
+int ProcessorFCFS::get_countrdy()
+{
+	return Ready.get_count();
+}
+ostream& operator << (ostream& out, ProcessorFCFS& c)
+{
+	out << " [FCFS]: " << c.get_countrdy() << "  RDY : ";
+	c.print_RDY();
+	return out;
 }

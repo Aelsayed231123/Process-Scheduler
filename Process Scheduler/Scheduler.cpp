@@ -5,6 +5,7 @@
 #include"ProcessorFCFS.h"
 #include"ProcessorSJF.h"
 #include"ProcessorRR.h"
+#include"UI.h"
 Scheduler::Scheduler()
 {
 	process_ptr = nullptr;
@@ -18,18 +19,23 @@ Scheduler::Scheduler()
 	ForkProb = 0;
 	num_processes = 0;
 	TimeStep = 1;
-	TerminatedSize = 0;
+	num_processors = 0;
+	num_run = 0;
+	num_blk = 0;
+	num_terminate = 0;
 }
 void Scheduler::Simulate()
 {
-	while (TerminatedSize < num_processes)
+	LoadInputs();
+		UI u(this);
+		int i = 0;
+	while (num_terminate < num_processes)
 	{
-
-		Schedule();
+		Schedule(i);
 		int Random = (rand() % (100 - 1 + 1)) + 1;
 		for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
 		{
-			if (Processor_ptr[i]->isBusy())
+			if ((Processor_ptr[i]->Busymorethan1())&&Processor_ptr[i]->isBusy())
 			{
 				if (Random >= 1 && Random <= 15)
 				{
@@ -44,41 +50,47 @@ void Scheduler::Simulate()
 				}
 				else if (Random >= 50 && Random <= 60)
 				{
-					Terminate(Processor_ptr[i]->getRUN());
+					Terminate(Processor_ptr[i]);
 					//clear run of processor
 				}
 			}
-			else {
-				break;
+			if (!BLKlist.isEmpty())
+			{
+				if (Random < 10)
+				{
+					Process* P;
+					BLKlist.dequeue(P);
+					num_blk--;
+					Processor_ptr[i]->MovetoRDY(P);
+				}
 			}
+			Random = (rand() % (100 - 1 + 1)) + 1;
+			
 		}
+		u.LoadInterface();
 		TimeStep++;
-
 	}
 }
-void Scheduler::Schedule()
+void Scheduler::Schedule(int& ind)
 {
-
-	for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
+	Process* P;
+	NEW.peek(P);
+	if (P)
 	{
-		Process* P;
+		if (P->get_AT() == TimeStep)
+		{
+			Processor_ptr[ind]->MovetoRDY(P);
+			ind++;
+			NEW.dequeue(P);
 			NEW.peek(P);
-			if (P->get_AT() == TimeStep)
-			{
-				Processor_ptr[i]->MovetoRDY(P);
-				NEW.dequeue(P);
-			}
-			else
-			{
-				break;
-			}
-
+		}
 	}
+			if (ind ==num_processors)
+				ind = 0;
 	for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
 	{
 		Processor_ptr[i]->ScheduleAlgo();
 	}
-
 
 }
 void Scheduler::LoadInputs()
@@ -87,7 +99,8 @@ void Scheduler::LoadInputs()
 	finput >> num_FCFS >> num_SJF >> num_RR;
 	int time_slice;
 	finput >> time_slice;
-	Processor_ptr = new Processor * [num_FCFS + num_FCFS + num_RR];
+	num_processors = num_FCFS + num_SJF + num_RR;
+	Processor_ptr = new Processor * [num_processors];
 	int i = 0;
 	for (; i < num_RR; i++)
 	{
@@ -101,11 +114,10 @@ void Scheduler::LoadInputs()
 	{
 		Processor_ptr[i] = new ProcessorFCFS(this);
 	}
+
 	////////////////////////////creating rr processors with timesclice as par in constructor
 	finput >> RTF >> MaxW >> STL >> ForkProb >> num_processes;
 	int loop_count = num_processes;
-	process_ptr = new Process * [num_processes];
-	int index = 0;
 	int Arrival_time, ID, CPU_time, n;
 	mypair<int, int>arr[100];
 	while (loop_count)
@@ -119,10 +131,9 @@ void Scheduler::LoadInputs()
 			finput >> arr[i].second;
 		}
 		Process* ptr = new Process(ID, Arrival_time, CPU_time, n, arr);
-		process_ptr[index] = ptr;
+		NEW.enqueue(ptr);
 		//////////intantaie process with constructor,setting pairs
 		finput.ignore(10000000000, '\n');
-		index++;
 		loop_count--;
 	}
 	while (!finput.eof())
@@ -135,13 +146,15 @@ void Scheduler::LoadInputs()
 }
 void Scheduler::movetoBLK(Processor* Pr)
 {
-	BLKlist.enqueue(Pr->MovetoBLK());
+	BLKlist.enqueue(Pr->RemoveRun());
+	num_blk++;
 }
-void Scheduler::Terminate(Process* P)
+void Scheduler::Terminate(Processor* Pr)
 {
+	Process* P = Pr->RemoveRun();
 	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
-	TerminatedSize++;
+	num_terminate++;
 }
 void Scheduler::movetoRDY(Process* p, Processor* pu)
 {
@@ -150,4 +163,42 @@ void Scheduler::movetoRDY(Process* p, Processor* pu)
 int Scheduler::get_time_step()
 {
 	return TimeStep;
+}
+void Scheduler::Print_Processors_Ready()
+{
+	for (int i = 0; i < num_processors; i++)
+	{
+		cout << "Processor " << i + 1;
+		Processor_ptr[i]->print_RDY();
+		cout << "\n";
+	}
+}
+void Scheduler::Print_Processes_inRun()
+{
+	for (int i = 0; i < num_processors; i++)
+	{
+
+		Processor_ptr[i]->print_process_inRun();
+		cout << "P(" << i + 1 << ") ,";
+	}
+}
+void Scheduler::Print_Processes_trem()
+{
+	Terminated.print();
+}
+void Scheduler::Print_Processes_blk()
+{
+	BLKlist.print();
+}
+int Scheduler::get_num_run()
+{
+	return num_run;
+}
+int Scheduler::get_num_blk()
+{
+	return num_blk;
+}
+int Scheduler::get_num_terminate()
+{
+	return num_terminate;
 }

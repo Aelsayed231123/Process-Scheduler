@@ -1,22 +1,30 @@
 #include "ProcessorRR.h"
 #include"Scheduler.h"
+#include<iostream>
+using namespace std;
 ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 {
 	TimeSlice = time;
 }
 void ProcessorRR::ScheduleAlgo()
 {
-	if (State == BUSY || RDY.isEmpty())
+	if (State == BUSY)
 	{
+		BusyTime++;
 		return;
 	}
 	Process* Pr;
 	RDY.dequeue(Pr);
-	RUN = Pr;
+	if (Pr)
+	{
+		RUN = Pr;
+		BusyTime = 1;
+		State = BUSY;
+	}
 }
 int ProcessorRR::getExpTime()
 {
-	return 0;
+	return ExpTime;
 }
 void ProcessorRR:: MovetoRDY(Process* P)
 {
@@ -25,32 +33,30 @@ void ProcessorRR:: MovetoRDY(Process* P)
 	if (P == RUN)
 	{
 		RUN = nullptr;
+		BusyTime = 0;
 		State = IDLE;
 	}
 }
-Process*  ProcessorRR::MovetoBLK()
+Process*  ProcessorRR::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
 	RUN = nullptr;
+	BusyTime = 0;
 	State = IDLE;
 	return temp;
 }
-void  ProcessorRR::Terminate(Process* P)
+void ProcessorRR::print_RDY()
 {
-	pSch->Terminate(P);
-	ExpTime -= P->get_CT();
-	RUN = nullptr;
-	State = IDLE;
+	RDY.print();
 }
-bool  ProcessorRR::MovetoRun(Process* P)
+int ProcessorRR::get_countrdy()
 {
-	if (State == IDLE)
-	{
-		RUN = P;
-		State = BUSY;
-		P->set_RT(pSch->get_time_step());
-			return true;
-	}
-	return false;
+	return RDY.get_count();
+}
+ostream& operator << (ostream& out, ProcessorRR& c)
+{
+	out << " [RR]: " << c.get_countrdy() << "  RDY : ";
+	c.print_RDY();
+	return out;
 }

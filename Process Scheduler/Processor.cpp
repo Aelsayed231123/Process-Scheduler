@@ -1,4 +1,6 @@
 #include "Processor.h"
+#include<iostream>
+using namespace std;
 Processor::Processor(Scheduler* psch)
 {
 	pSch = psch;
@@ -7,6 +9,7 @@ Processor::Processor(Scheduler* psch)
 	pUtil = -1;
 	RUN = nullptr;
 	ExpTime = 0;
+	BusyTime = 0;
 }
 Process* Processor::getRUN()
 {
@@ -26,5 +29,14 @@ int Processor::getExpTime()
 }
 bool Processor::isBusy()
 {
-	return(State == BUSY);
+	return (State==BUSY);
+}
+void Processor::print_process_inRun()
+{
+	if (RUN)
+		cout << *RUN << " , ";
+}
+bool Processor:: Busymorethan1()
+{
+	return(BusyTime > 1);
 }

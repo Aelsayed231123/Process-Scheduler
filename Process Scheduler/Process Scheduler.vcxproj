@@ -147,8 +147,15 @@
     <ClInclude Include="ProcessorFCFS.h" />
     <ClInclude Include="ProcessorRR.h" />
     <ClInclude Include="ProcessorSJF.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="UI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Process Scheduler.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="f1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

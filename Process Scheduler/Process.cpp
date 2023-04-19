@@ -80,3 +80,9 @@ bool Process::request_IO(int time)
 	}
 	return request;
 }
+ostream& operator << (ostream& out, Process& c)
+{
+
+	out << c.pID;
+	return out;
+}

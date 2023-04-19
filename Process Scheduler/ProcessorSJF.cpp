@@ -10,42 +10,46 @@ void ProcessorSJF::MovetoRDY(Process* P)
 	if (P == RUN)
 	{
 		RUN = nullptr;
+		BusyTime = 0;
 		State = IDLE;
 	}
 }
 void ProcessorSJF::ScheduleAlgo()
 {
-	if (isBusy() || Ready.isEmpty())
+	if (isBusy())
 	{
+		BusyTime++;
 		return;
 	}
 	Process* Pr;
 	Ready.dequeue(Pr);
-	MovetoRun(Pr);
+	if (Pr)
+	{
+		RUN = Pr;
+		BusyTime = 1;
+		State = BUSY;
+	}
 }
-Process*  ProcessorSJF::MovetoBLK()
+Process*  ProcessorSJF::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
 	RUN = nullptr;
+	BusyTime = 0;
 	State = IDLE;
 	return temp;
 }
-void  ProcessorSJF::Terminate(Process* P)
+void ProcessorSJF::print_RDY()
 {
-	pSch->Terminate(P);
-	ExpTime -= P->get_CT();
-	RUN = nullptr;
-	State = IDLE;
+	Ready.print();
 }
-bool  ProcessorSJF::MovetoRun(Process* P)
+int ProcessorSJF::get_countrdy()
 {
-	if (State == IDLE)
-	{
-		RUN = P;
-		State = BUSY;
-		P->set_RT(pSch->get_time_step());
-			return true;
-	}
-	return false;
+	return Ready.get_count();
+}
+ostream& operator << (ostream& out, ProcessorSJF& c)
+{
+	out << " [SJF]: " << c.get_countrdy() << "  RDY : ";
+	c.print_RDY();
+	return out;
 }
