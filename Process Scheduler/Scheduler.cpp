@@ -202,3 +202,11 @@ int Scheduler::get_num_terminate()
 {
 	return num_terminate;
 }
+void Scheduler::increment_num_run()
+{
+	num_run++;
+}
+void Scheduler::decrement_num_run()
+{
+	num_run--;
+}

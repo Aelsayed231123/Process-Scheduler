@@ -10,6 +10,7 @@ void ProcessorSJF::MovetoRDY(Process* P)
 	if (P == RUN)
 	{
 		RUN = nullptr;
+		pSch->decrement_num_run();
 		BusyTime = 0;
 		State = IDLE;
 	}
@@ -26,6 +27,7 @@ void ProcessorSJF::ScheduleAlgo()
 	if (Pr)
 	{
 		RUN = Pr;
+		pSch->increment_num_run();
 		BusyTime = 1;
 		State = BUSY;
 	}
@@ -35,6 +37,7 @@ Process*  ProcessorSJF::RemoveRun()
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
 	RUN = nullptr;
+	pSch->decrement_num_run();
 	BusyTime = 0;
 	State = IDLE;
 	return temp;

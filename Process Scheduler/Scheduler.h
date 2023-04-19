@@ -34,5 +34,7 @@ public:
 	int get_num_run();
 	int get_num_blk();
 	int get_num_terminate();
+	void increment_num_run();
+	void decrement_num_run();
 };
 #endif

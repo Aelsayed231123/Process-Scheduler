@@ -19,6 +19,7 @@ void ProcessorRR::ScheduleAlgo()
 	{
 		RUN = Pr;
 		BusyTime = 1;
+		pSch->increment_num_run();
 		State = BUSY;
 	}
 }
@@ -34,6 +35,7 @@ void ProcessorRR:: MovetoRDY(Process* P)
 	{
 		RUN = nullptr;
 		BusyTime = 0;
+		pSch->decrement_num_run();
 		State = IDLE;
 	}
 }
@@ -42,6 +44,7 @@ Process*  ProcessorRR::RemoveRun()
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
 	RUN = nullptr;
+	pSch->decrement_num_run();
 	BusyTime = 0;
 	State = IDLE;
 	return temp;
