@@ -33,7 +33,7 @@ void Scheduler::Simulate()
 	{
 		Schedule(i);
 		int Random = (rand() % (100 - 1 + 1)) + 1;
-		for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
+		for (int i = 0; i < num_processors; i++)
 		{
 			if ((Processor_ptr[i]->Busymorethan1())&&Processor_ptr[i]->isBusy())
 			{
@@ -65,7 +65,14 @@ void Scheduler::Simulate()
 				}
 			}
 			Random = (rand() % (100 - 1 + 1)) + 1;
-			
+		}
+		
+		for (int i = num_RR + num_SJF; i < num_processors; i++)
+		{
+			if (Processor_ptr[i]->Kill(Random))
+			{
+				break;
+			}
 		}
 		u.LoadInterface();
 		TimeStep++;
@@ -87,7 +94,7 @@ void Scheduler::Schedule(int& ind)
 	}
 			if (ind ==num_processors)
 				ind = 0;
-	for (int i = 0; i < num_FCFS + num_RR + num_SJF; i++)
+	for (int i = 0; i < num_processors; i++)
 	{
 		Processor_ptr[i]->ScheduleAlgo();
 	}
@@ -209,4 +216,9 @@ void Scheduler::increment_num_run()
 void Scheduler::decrement_num_run()
 {
 	num_run--;
+}
+void Scheduler::TerminateKilled(Process* P)
+{
+	Terminated.enqueue(P);
+	num_terminate++;
 }

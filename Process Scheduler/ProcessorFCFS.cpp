@@ -50,26 +50,18 @@ bool ProcessorFCFS::Kill(int id)
 	{
 		return false;
 	}
-	Node<Process*>* ptr = Ready.get_head();
 	Process* p = nullptr;
-	while (ptr)
-	{
-		if (ptr->getItem()->get_ID() == id)
-		{
-			p = ptr->getItem();
-			break;
-		}
-		ptr = ptr->getNext();
-	}
+	p=Ready.SearchbyID(id);
 	if (p)
 	{
-		pSch->Terminate(this);
+		pSch->TerminateKilled(p);
 		return true;
 	}
 	return false;
 }
 void ProcessorFCFS::print_RDY()
 {
+	cout << "[FCFS] :  ";
 	Ready.PrintList();
 }
 int ProcessorFCFS::get_countrdy()

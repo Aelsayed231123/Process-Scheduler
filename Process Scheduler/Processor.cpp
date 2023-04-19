@@ -40,3 +40,7 @@ bool Processor:: Busymorethan1()
 {
 	return(BusyTime > 1);
 }
+ bool Processor::  Kill(int id)
+{
+	return false;
+}

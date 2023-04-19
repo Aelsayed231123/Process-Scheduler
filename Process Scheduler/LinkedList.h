@@ -3,7 +3,7 @@
 #include<iostream>
 using namespace std;
 #include "Node.h"
-
+#include"Process.h"
 template <typename T>
 class LinkedList
 {
@@ -98,10 +98,6 @@ public:
 	{
 		return(!Head);
 	}
-	Node<T>* get_head()
-	{
-		return Head;
-	}
 	Node<T>* RemoveFirst()
 	{
 		if (Head != nullptr)
@@ -128,6 +124,30 @@ public:
 	{
 		return count;
 	}
+	T SearchbyID(int id)
+	{
+		Node<T>* pre = nullptr;
+		Node<T>* ptr = Head;
+		while (ptr)
+		{
+			if (*(ptr->getItem()) == id)
+			{
+				break;
+			}
+			pre = ptr;
+			ptr = ptr->getNext();
+		}
+		if (ptr)
+		{
+			if (ptr == Head)
+			{
+				Head = Head->getNext();
+			}
+			else
+			pre->setNext(ptr->getNext());
+			return ptr->getItem();
+		}
+		return 0;
+	}
 };
-
 #endif

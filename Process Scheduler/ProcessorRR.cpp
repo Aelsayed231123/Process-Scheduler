@@ -51,6 +51,7 @@ Process*  ProcessorRR::RemoveRun()
 }
 void ProcessorRR::print_RDY()
 {
+	cout << "[RR] :  ";
 	RDY.print();
 }
 int ProcessorRR::get_countrdy()

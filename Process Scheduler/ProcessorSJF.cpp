@@ -44,6 +44,7 @@ Process*  ProcessorSJF::RemoveRun()
 }
 void ProcessorSJF::print_RDY()
 {
+	cout << "[SJF] :  ";
 	Ready.print();
 }
 int ProcessorSJF::get_countrdy()

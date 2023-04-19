@@ -33,5 +33,6 @@ public:
 	void set_child(Process* c);
 	bool request_IO(int time);
 	friend ostream& operator << (ostream& out, Process& c);
+	bool operator==(int id);
 };
 #endif

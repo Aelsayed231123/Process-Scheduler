@@ -27,6 +27,7 @@ public:
 	virtual void print_RDY() = 0;
 	void print_process_inRun();
 	bool Busymorethan1();
+	virtual bool Kill(int id);
 
 };
 #endif

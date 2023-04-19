@@ -86,3 +86,7 @@ ostream& operator << (ostream& out, Process& c)
 	out << c.pID;
 	return out;
 }
+bool Process:: operator==(int id)
+{
+	return(id == pID);
+}
