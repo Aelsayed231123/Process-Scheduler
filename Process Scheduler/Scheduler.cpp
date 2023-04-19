@@ -66,7 +66,7 @@ void Scheduler::Simulate()
 			}
 			Random = (rand() % (100 - 1 + 1)) + 1;
 		}
-		
+		Random = (rand() % (100 - 1 + 1)) + 1;
 		for (int i = num_RR + num_SJF; i < num_processors; i++)
 		{
 			if (Processor_ptr[i]->Kill(Random))
@@ -84,7 +84,7 @@ void Scheduler::Schedule(int& ind)
 	NEW.peek(P);
 	if (P)
 	{
-		if (P->get_AT() == TimeStep)
+		while (P&&(P->get_AT() == TimeStep))
 		{
 			Processor_ptr[ind]->MovetoRDY(P);
 			ind++;
@@ -186,7 +186,7 @@ void Scheduler::Print_Processes_inRun()
 	{
 
 		Processor_ptr[i]->print_process_inRun();
-		cout << "P(" << i + 1 << ") ,";
+		cout << "(P" << i + 1 << ") ,";
 	}
 }
 void Scheduler::Print_Processes_trem()

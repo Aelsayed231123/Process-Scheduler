@@ -34,7 +34,7 @@ bool Processor::isBusy()
 void Processor::print_process_inRun()
 {
 	if (RUN)
-		cout << *RUN << " , ";
+		cout << *RUN ;
 }
 bool Processor:: Busymorethan1()
 {
