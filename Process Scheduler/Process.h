@@ -15,6 +15,7 @@ class Process
 	int TRT;
 	int WT;
 	int N;
+	int RunTime;
 	LinkedQueue<mypair<int,int>>IOqueue;
 	Process* Childptr;
 public:
@@ -33,5 +34,8 @@ public:
 	bool request_IO(int time);
 	friend ostream& operator << (ostream& out, Process& c);
 	bool operator==(int id);
+	void increment_run_time();
+	int getRunTime();
+	bool isDone();
 };
 #endif

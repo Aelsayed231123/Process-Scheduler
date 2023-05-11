@@ -24,7 +24,7 @@ public:
 	void Schedule(int& ind);
 	void LoadInputs();
 	void movetoBLK(Processor*Pr);
-	void Terminate(Processor* Pr);
+	void Terminate(Process* P);
 	void TerminateKilled(Process* P);
 	void movetoRDY(Process*P,Processor* Pr);
 	int get_time_step();

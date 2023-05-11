@@ -24,60 +24,60 @@ Scheduler::Scheduler()
 	num_blk = 0;
 	num_terminate = 0;
 }
-void Scheduler::Simulate()
-{
-	LoadInputs();
-		UI u(this);
-		int i = 0;
-	while (num_terminate < num_processes)
-	{
-		Schedule(i);
-		int Random = (rand() % (100 - 1 + 1)) + 1;
-		for (int i = 0; i < num_processors; i++)
-		{
-			if ((Processor_ptr[i]->Busymorethan1())&&Processor_ptr[i]->isBusy())
-			{
-				if (Random >= 1 && Random <= 15)
-				{
-					movetoBLK(Processor_ptr[i]);
-					//clear run of processor
-				}
-				else if (Random >= 20 && Random <= 30)
-				{
-					Processor_ptr[i]->MovetoRDY(Processor_ptr[i]->getRUN());
-					//clear run of processor
-
-				}
-				else if (Random >= 50 && Random <= 60)
-				{
-					Terminate(Processor_ptr[i]);
-					//clear run of processor
-				}
-			}
-			if (!BLKlist.isEmpty())
-			{
-				if (Random < 10)
-				{
-					Process* P;
-					BLKlist.dequeue(P);
-					num_blk--;
-					Processor_ptr[i]->MovetoRDY(P);
-				}
-			}
-			Random = (rand() % (100 - 1 + 1)) + 1;
-		}
-		Random = (rand() % (100 - 1 + 1)) + 1;
-		for (int i = num_RR + num_SJF; i < num_processors; i++)
-		{
-			if (Processor_ptr[i]->Kill(Random))
-			{
-				break;
-			}
-		}
-		u.LoadInterface();
-		TimeStep++;
-	}
-}
+//void Scheduler::Simulate()
+//{
+//	LoadInputs();
+//		UI u(this);
+//		int i = 0;
+//	while (num_terminate < num_processes)
+//	{
+//		Schedule(i);
+//		int Random = (rand() % (100 - 1 + 1)) + 1;
+//		for (int i = 0; i < num_processors; i++)
+//		{
+//			if ((Processor_ptr[i]->Busymorethan1())&&Processor_ptr[i]->isBusy())
+//			{
+//				if (Random >= 1 && Random <= 15)
+//				{
+//					movetoBLK(Processor_ptr[i]);
+//					//clear run of processor
+//				}
+//				else if (Random >= 20 && Random <= 30)
+//				{
+//					Processor_ptr[i]->MovetoRDY(Processor_ptr[i]->getRUN());
+//					//clear run of processor
+//
+//				}
+//				else if (Random >= 50 && Random <= 60)
+//				{
+//					Terminate(Processor_ptr[i]);
+//					//clear run of processor
+//				}
+//			}
+//			if (!BLKlist.isEmpty())
+//			{
+//				if (Random < 10)
+//				{
+//					Process* P;
+//					BLKlist.dequeue(P);
+//					num_blk--;
+//					Processor_ptr[i]->MovetoRDY(P);
+//				}
+//			}
+//			Random = (rand() % (100 - 1 + 1)) + 1;
+//		}
+//		Random = (rand() % (100 - 1 + 1)) + 1;
+//		for (int i = num_RR + num_SJF; i < num_processors; i++)
+//		{
+//			if (Processor_ptr[i]->Kill(Random))
+//			{
+//				break;
+//			}
+//		}
+//		u.LoadInterface();
+//		TimeStep++;
+//	}
+//}
 void Scheduler::Schedule(int& ind)
 {
 	Process* P;
@@ -156,9 +156,8 @@ void Scheduler::movetoBLK(Processor* Pr)
 	BLKlist.enqueue(Pr->RemoveRun());
 	num_blk++;
 }
-void Scheduler::Terminate(Processor* Pr)
+void Scheduler::Terminate(Process* P)
 {
-	Process* P = Pr->RemoveRun();
 	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
 	num_terminate++;

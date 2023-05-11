@@ -21,18 +21,19 @@ void ProcessorFCFS::ScheduleAlgo()
 {
 	if (isBusy())
 	{
-		BusyTime++;
+		if (RUN->isDone())
+		{
+			pSch->Terminate(RemoveRun());
+			fromRDY_to_run();
+		}
+		else
+		{
+			RUN->increment_run_time();
+			BusyTime++;
+		}
 		return;
 	}
-	Process* Pr;
-	Pr = Ready.GetFirst()->getItem();
-	if (Pr)
-	{
-		RUN = Pr;
-		pSch->increment_num_run();
-		BusyTime = 1;
-		State = BUSY;
-	}
+	fromRDY_to_run();
 }
 Process* ProcessorFCFS::RemoveRun()
 {
@@ -73,4 +74,20 @@ ostream& operator << (ostream& out, ProcessorFCFS& c)
 	out << " [FCFS]: " << c.get_countrdy() << "  RDY : ";
 	c.print_RDY();
 	return out;
+}
+bool ProcessorFCFS::fromRDY_to_run()
+{
+	Process* Pr;
+	Pr = Ready.GetFirst()->getItem();
+	if (Pr)
+	{
+		RUN = Pr;
+		Pr->increment_run_time();
+		pSch->increment_num_run();
+		BusyTime = 1;
+		State = BUSY;
+		return true;
+	}
+	else
+		return false;
 }

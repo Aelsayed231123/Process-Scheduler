@@ -5,6 +5,7 @@ class ProcessorFCFS :
     public Processor
 {
     LinkedList<Process*>Ready;
+	bool fromRDY_to_run();
 public:
     ProcessorFCFS(Scheduler* psch);
 	void MovetoRDY(Process* P);

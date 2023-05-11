@@ -10,18 +10,25 @@ void ProcessorRR::ScheduleAlgo()
 {
 	if (State == BUSY)
 	{
-		BusyTime++;
+		if (RUN->isDone())
+		{
+			pSch->Terminate(RemoveRun());
+			fromRDY_to_run();
+		}
+		if (BusyTime == TimeSlice)
+		{
+			Process* R= RemoveRun();
+			MovetoRDY(R);
+			fromRDY_to_run();
+		}
+		else
+		{
+			RUN->increment_run_time();
+			BusyTime++;
+		}
 		return;
 	}
-	Process* Pr;
-	RDY.dequeue(Pr);
-	if (Pr)
-	{
-		RUN = Pr;
-		BusyTime = 1;
-		pSch->increment_num_run();
-		State = BUSY;
-	}
+	fromRDY_to_run();
 }
 int ProcessorRR::getExpTime()
 {
@@ -63,4 +70,18 @@ ostream& operator << (ostream& out, ProcessorRR& c)
 	out << " [RR]: " << c.get_countrdy() << "  RDY : ";
 	c.print_RDY();
 	return out;
+}
+bool ProcessorRR::fromRDY_to_run()
+{
+	Process* Pr;
+	if (RDY.dequeue(Pr))
+	{
+		RUN = Pr;
+		BusyTime = 1;
+		pSch->increment_num_run();
+		State = BUSY;
+		return true;
+	}
+	else
+		return false;
 }

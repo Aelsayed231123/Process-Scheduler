@@ -19,18 +19,19 @@ void ProcessorSJF::ScheduleAlgo()
 {
 	if (isBusy())
 	{
-		BusyTime++;
+		if (RUN->isDone())
+		{
+			pSch->Terminate(RemoveRun());
+			fromRDY_to_run();
+		}
+		else
+		{
+			RUN->increment_run_time();
+			BusyTime++;
+		}
 		return;
 	}
-	Process* Pr;
-	Ready.dequeue(Pr);
-	if (Pr)
-	{
-		RUN = Pr;
-		pSch->increment_num_run();
-		BusyTime = 1;
-		State = BUSY;
-	}
+	fromRDY_to_run();
 }
 Process*  ProcessorSJF::RemoveRun()
 {
@@ -56,4 +57,17 @@ ostream& operator << (ostream& out, ProcessorSJF& c)
 	out << " [SJF]: " << c.get_countrdy() << "  RDY : ";
 	c.print_RDY();
 	return out;
+}
+bool ProcessorSJF::fromRDY_to_run()
+{
+	Process* Pr;
+	if (Ready.dequeue(Pr))
+	{
+		RUN = Pr;
+		pSch->increment_num_run();
+		BusyTime = 1;
+		State = BUSY;
+		return true;
+	}
+	return false;
 }

@@ -7,6 +7,7 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	TT = -1;
 	TRT = -1;
 	WT = -1;
+	RunTime = 0;
 	Childptr = nullptr;
 	for (int i = 0; i < N; i++)
 	{
@@ -81,11 +82,22 @@ bool Process::request_IO(int time)
 }
 ostream& operator << (ostream& out, Process& c)
 {
-
 	out << c.pID;
 	return out;
 }
 bool Process:: operator==(int id)
 {
 	return(id == pID);
+}
+void Process::increment_run_time()
+{
+	RunTime++;
+}
+int  Process::getRunTime()
+{
+	return RunTime;
+}
+bool Process::isDone()
+{
+	return(RunTime == CT);
 }
