@@ -14,5 +14,6 @@ public:
 	bool Kill(int id);
 	void print_RDY();
 	int get_countrdy();
+	bool Fork(int fp);
 };
 

@@ -29,13 +29,14 @@ public:
 	int get_TT();
 	int get_TRT();
 	int get_WT();
-	bool CreateChild(int p);
+	int getRunTime();
+	int get_remaining_time();
 	void set_child(Process* c);
+	Process* get_child();
 	bool request_IO(int time);
 	friend ostream& operator << (ostream& out, Process& c);
 	bool operator==(int id);
 	void increment_run_time();
-	int getRunTime();
 	bool isDone();
 };
 #endif

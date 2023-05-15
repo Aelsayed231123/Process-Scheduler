@@ -53,17 +53,6 @@ int Process::get_WT()
 {
 	return WT;
 }
-bool Process::CreateChild(int fp)
-{
-	bool Create = false;
-	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
-	if (r >= fp)
-	{
-		Create = true;
-	}
-	return Create;
-}
 void Process::set_child(Process* c)
 {
 	Childptr = c;
@@ -100,4 +89,12 @@ int  Process::getRunTime()
 bool Process::isDone()
 {
 	return(RunTime == CT);
+}
+int Process::get_remaining_time()
+{
+	return(CT - RunTime);
+}
+Process* Process::get_child()
+{
+	return Childptr;
 }

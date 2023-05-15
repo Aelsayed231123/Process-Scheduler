@@ -26,6 +26,10 @@ void ProcessorFCFS::ScheduleAlgo()
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
 		}
+		else if (Fork(pSch->get_fork_probability()))
+		{
+			pSch->forK_a_child(RUN);
+		}
 		else
 		{
 			RUN->increment_run_time();
@@ -55,7 +59,7 @@ bool ProcessorFCFS::Kill(int id)
 	p=Ready.SearchbyID(id);
 	if (p)
 	{
-		pSch->TerminateKilled(p);
+		pSch->Terminate(p);
 		return true;
 	}
 	return false;
@@ -90,4 +94,17 @@ bool ProcessorFCFS::fromRDY_to_run()
 	}
 	else
 		return false;
+}
+bool ProcessorFCFS::Fork(int fp)
+{
+	if (RUN->get_child())
+		return false;
+	bool Create = false;
+	srand((unsigned)time(NULL));
+	float r = ((double)rand() / (RAND_MAX));
+	if (r >= fp)
+	{
+		Create = true;
+	}
+	return Create;
 }

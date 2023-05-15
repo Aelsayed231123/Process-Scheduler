@@ -221,3 +221,24 @@ void Scheduler::TerminateKilled(Process* P)
 	Terminated.enqueue(P);
 	num_terminate++;
 }
+void Scheduler:: forK_a_child(Process* P)
+{
+	int new_id = num_processes + P->get_ID();
+	Process* child = new Process(new_id, TimeStep, P->get_remaining_time());
+	P->set_child(child);
+	get_shortest_FCFS()->MovetoRDY(P);
+}
+int Scheduler::get_fork_probability()
+{
+	return ForkProb;
+}
+Processor* Scheduler::get_shortest_FCFS()
+{
+	Processor* shortestFCFS = Processor_ptr[num_SJF + num_RR + 1];
+	for (int i = num_SJF + num_RR + 1; i < num_SJF + num_RR + num_FCFS; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < shortestFCFS->getExpTime())
+			shortestFCFS = Processor_ptr[i];
+	}
+	return shortestFCFS;
+}

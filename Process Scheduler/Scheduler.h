@@ -20,7 +20,7 @@ private:
 	
 public:
 	Scheduler();
-	void Simulate();
+	//void Simulate();
 	void Schedule(int& ind);
 	void LoadInputs();
 	void movetoBLK(Processor*Pr);
@@ -37,5 +37,8 @@ public:
 	int get_num_terminate();
 	void increment_num_run();
 	void decrement_num_run();
+	void forK_a_child(Process* P);
+	int get_fork_probability();
+	Processor* get_shortest_FCFS();
 };
 #endif
