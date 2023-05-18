@@ -20,7 +20,24 @@ void ProcessorFCFS::MovetoRDY(Process* P)
 }
 void ProcessorFCFS::ScheduleAlgo()
 {
-	if (isBusy())
+	if (will_overheat()&&State!=OVERHEATED)
+	{
+		Process* ptr=RUN;
+		pSch->movetoRDY(ptr);
+		RUN = nullptr;
+		while (!Ready.isEmpty())
+		{
+			ptr = RemoveFromRDY();
+			pSch->movetoRDY(ptr);
+		}
+		stopping_time--;
+		if (stopping_time == 0)
+		{
+			state = IDLE;
+		}
+
+	}
+	else if (isBusy())
 	{
 		if (RUN->isDone())
 		{
@@ -42,9 +59,14 @@ void ProcessorFCFS::ScheduleAlgo()
 			BusyTime++;
 		}
 		return;
+
+		
 	}
-	fromRDY_to_run();
-	CheckMigration();
+	else if (!isBusy())
+	{
+		fromRDY_to_run();
+		CheckMigration();
+	}
 }
 //Not Applicable for Forked Processes
 void ProcessorFCFS::CheckMigration()
@@ -152,4 +174,17 @@ void ProcessorFCFS::print_process_inRun()
 {
 	if (RUN)
 		cout << *RUN;
+}
+Process* ProcessorFCFS::RemoveFromRDY()
+{
+	if (Ready.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First = (Ready.RemoveFirst())->getItem();
+		ExpTime -= First->get_CT();
+		return First;
+	}
 }

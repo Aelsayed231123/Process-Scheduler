@@ -9,7 +9,24 @@ ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 }
 void ProcessorRR::ScheduleAlgo()
 {
-	if (State == BUSY)
+	if (will_overheat() && state != OVERHEATED)
+	{
+		Processor* ptr = RUN;
+		pSch->movetoRDY(ptr);
+		RUN = nullptr;
+		while (!Ready.isEmpty())
+		{
+			ptr = RemoveFromRDY();
+			pSch->movetoRDY(ptr);
+		}
+		stopping_time--;
+		if (stopping_time == 0)
+		{
+			state = IDLE;
+		}
+
+	}
+	else if (State == BUSY)
 	{
 
 		if (RUN->isDone())
@@ -36,8 +53,11 @@ void ProcessorRR::ScheduleAlgo()
 		}
 		return;
 	}
-	fromRDY_to_run();
-	CheckMigration();
+	else if (!isBusy())
+	{
+		fromRDY_to_run();
+		CheckMigration();
+	}
 }
 void ProcessorRR::CheckMigration()
 {

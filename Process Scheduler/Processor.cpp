@@ -52,3 +52,22 @@ bool Processor:: Busymorethan1()
  {
 	 return IdealTime;
  }
+ bool Processor::isOverheated()
+ {
+	 return (State == OVERHEATED);
+ }
+ void Processor::decrement_stopping_time()
+ {
+	 stopping_time--;
+ }
+ bool Processor::will_overheat()
+ {
+	 int prob= (rand() % (100 - 1 + 1)) + 1;
+	 if (prob < 5 && prob>0 && isBusy())
+	 {
+		 State = OVERHEATED;
+		 return true;
+	 }
+	 else
+		 return false;
+ }

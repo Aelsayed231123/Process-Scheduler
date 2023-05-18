@@ -4,7 +4,7 @@
 using namespace std;
 class Scheduler;
 class Process;
-enum CPUState { IDLE, BUSY };
+enum CPUState { IDLE, BUSY, OVERHEATED };
 class Processor
 {
 protected:
@@ -15,6 +15,7 @@ protected:
 	int ExpTime;
 	int BusyTime;
 	int IdealTime;
+	int stopping_time;
 public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
@@ -32,6 +33,8 @@ public:
 	bool Busymorethan1();
 	virtual bool Kill(int id);
 	virtual bool TerminateChild(int id);
-
+	bool isOverheated();
+	void decrement_stopping_time();
+	bool will_overheat();
 };
 #endif
