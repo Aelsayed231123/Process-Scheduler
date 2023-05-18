@@ -11,6 +11,7 @@ Processor::Processor(Scheduler* psch)
 	ExpTime = 0;
 	BusyTime = 0;
 	IdealTime = 0;
+	TotalBusyTime = 0;
 }
 Process* Processor::getRUN()
 {
@@ -44,9 +45,9 @@ bool Processor:: Busymorethan1()
  {
 	 return false;
  }
- int  Processor::getBusyTime()
+ int  Processor::getTotalBusyTime()
  {
-	 return BusyTime;
+	 return TotalBusyTime;
  }
  int Processor::getIdealTime()
  {

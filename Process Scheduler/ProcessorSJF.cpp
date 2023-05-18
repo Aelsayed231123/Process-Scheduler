@@ -28,6 +28,7 @@ void ProcessorSJF::ScheduleAlgo()
 		else
 		{
 			RUN->increment_run_time();
+			TotalBusyTime++;
 			BusyTime++;
 		}
 		return;
@@ -82,6 +83,7 @@ bool ProcessorSJF::fromRDY_to_run()
 		pSch->increment_num_run();
 		BusyTime = 1;
 		State = BUSY;
+		TotalBusyTime++;
 		return true;
 	}
 	else
