@@ -10,6 +10,7 @@ class ProcessorSJF : public Processor
 public:
 	ProcessorSJF(Scheduler* pS);
 	void MovetoRDY(Process* P);
+	Process* RemoveFromRDY();
 	void ScheduleAlgo();
 	Process* RemoveRun();
 	void print_RDY();

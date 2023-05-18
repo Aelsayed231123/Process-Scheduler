@@ -14,15 +14,17 @@ protected:
 	Process* RUN;
 	int ExpTime;
 	int BusyTime;
+	int TotalBusyTime;
 	int IdealTime;
 	int stopping_time;
 public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
+	virtual Process* RemoveFromRDY() = 0;
 	virtual Process* RemoveRun() = 0;
 	int getExpTime();
-	int getBusyTime();
+	int getTotalBusyTime();
 	int getIdealTime();
 	Process* getRUN();
 	float getpLoad();

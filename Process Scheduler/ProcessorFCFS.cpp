@@ -3,7 +3,7 @@
 #include"Process.h"
 #include<iostream>
 using namespace std;
-ProcessorFCFS::ProcessorFCFS(Scheduler* psch): Processor(psch)
+ProcessorFCFS::ProcessorFCFS(Scheduler* psch) : Processor(psch)
 {
 }
 void ProcessorFCFS::MovetoRDY(Process* P)
@@ -45,18 +45,22 @@ void ProcessorFCFS::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else if (Fork(pSch->get_fork_probability()))
-		{
-			pSch->forK_a_child(RUN);
-		}
-		else if (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()))
-		{
-			CheckMigration();
-		}
 		else
 		{
-			RUN->increment_run_time();
-			BusyTime++;
+			if (Fork(pSch->get_fork_probability()))
+			{
+				pSch->forK_a_child(RUN);
+			}
+			if (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
+			{
+				CheckMigration();
+			}
+			else
+			{
+				RUN->increment_run_time();
+				BusyTime++;
+			}
+			TotalBusyTime++;
 		}
 		return;
 
@@ -71,10 +75,23 @@ void ProcessorFCFS::ScheduleAlgo()
 //Not Applicable for Forked Processes
 void ProcessorFCFS::CheckMigration()
 {
-	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()))
+	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
 	{
 		pSch->MigrateFCFSRR(RemoveRun());
 		fromRDY_to_run();
+	}
+}
+Process* ProcessorFCFS::RemoveFromRDY()
+{
+	if (Ready.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First = (Ready.RemoveFirst())->getItem();
+		ExpTime -= First->get_CT();
+		return First;
 	}
 }
 Process* ProcessorFCFS::RemoveRun()
@@ -94,7 +111,7 @@ bool ProcessorFCFS::Kill(int id)
 		return false;
 	}
 	Process* p = nullptr;
-	p=Ready.SearchbyID(id);
+	p = Ready.SearchbyID(id);
 	if (p)
 	{
 		pSch->Terminate(p);
@@ -129,6 +146,7 @@ bool ProcessorFCFS::fromRDY_to_run()
 		BusyTime = 1;
 		State = BUSY;
 		return true;
+		TotalBusyTime++;
 	}
 	else
 	{

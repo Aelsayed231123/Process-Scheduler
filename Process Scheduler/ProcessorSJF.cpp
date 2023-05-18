@@ -28,11 +28,26 @@ void ProcessorSJF::ScheduleAlgo()
 		else
 		{
 			RUN->increment_run_time();
+			TotalBusyTime++;
 			BusyTime++;
 		}
 		return;
 	}
 	fromRDY_to_run();
+}
+Process* ProcessorSJF::RemoveFromRDY()
+{
+	if (Ready.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First;
+		Ready.dequeue(First);
+		ExpTime -= First->get_CT();
+		return First;
+	}
 }
 Process*  ProcessorSJF::RemoveRun()
 {
@@ -68,6 +83,7 @@ bool ProcessorSJF::fromRDY_to_run()
 		pSch->increment_num_run();
 		BusyTime = 1;
 		State = BUSY;
+		TotalBusyTime++;
 		return true;
 	}
 	else
