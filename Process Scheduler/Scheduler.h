@@ -42,6 +42,9 @@ public:
 	int get_MaxW();
 	void increment_num_run();
 	void decrement_num_run();
+	void generate_outfile();
+	Processor* get_shortest();
+
 	void forK_a_child(Process* P);
 	int get_fork_probability();
 	Processor* get_shortest_FCFS();
