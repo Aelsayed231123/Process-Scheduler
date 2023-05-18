@@ -34,7 +34,7 @@ void ProcessorFCFS::ScheduleAlgo()
 			{
 				pSch->forK_a_child(RUN);
 			}
-			if (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()))
+			if (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
 			{
 				CheckMigration();
 			}

@@ -182,6 +182,7 @@ void Scheduler::WorkSteal()
 	float Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
 	while (Steallimit > 0.4)
 	{
+		Longest->
 		Process* Stolen;
 		Stolen = Longest->RemoveFromRDY();
 		if (Stolen != nullptr)
@@ -191,6 +192,10 @@ void Scheduler::WorkSteal()
 				continue;
 			}
 			Shortest->MovetoRDY(Stolen);
+		}
+		else
+		{
+			break;
 		}
 		Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
 	}
