@@ -37,5 +37,8 @@ public:
 	int get_num_terminate();
 	void increment_num_run();
 	void decrement_num_run();
+	void generate_outfile();
+	Processor* get_shortest();
+
 };
 #endif

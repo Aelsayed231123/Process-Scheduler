@@ -8,6 +8,7 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	TRT = -1;
 	WT = -1;
 	RunTime = 0;
+	IOD = 0;
 	Childptr = nullptr;
 	for (int i = 0; i < N; i++)
 	{
@@ -100,4 +101,8 @@ int  Process::getRunTime()
 bool Process::isDone()
 {
 	return(RunTime == CT);
+}
+int Process::get_IOD()
+{
+	return IOD;
 }

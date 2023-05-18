@@ -15,6 +15,7 @@ class Process
 	int TRT;
 	int WT;
 	int N;
+	int IOD;
 	int RunTime;
 	LinkedQueue<mypair<int,int>>IOqueue;
 	Process* Childptr;
@@ -37,5 +38,6 @@ public:
 	void increment_run_time();
 	int getRunTime();
 	bool isDone();
+	int get_IOD();
 };
 #endif
