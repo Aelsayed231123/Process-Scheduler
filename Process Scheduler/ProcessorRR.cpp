@@ -25,7 +25,7 @@ void ProcessorRR::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else if (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
+		else if (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()) && !(RUN->IsChild()))
 		{
 			CheckMigration();
 		}
@@ -41,7 +41,7 @@ void ProcessorRR::ScheduleAlgo()
 }
 void ProcessorRR::CheckMigration()
 {
-	while (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
+	while (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()) && !(RUN->IsChild()))
 	{
 		pSch->MigrateRRSJF(RemoveRun());
 		fromRDY_to_run();

@@ -50,7 +50,6 @@ public:
 	Processor* get_shortest_FCFS();
 	Processor* get_shortest_SJF();
 	Processor* get_shortest_RR();
-	Processor* get_shortest();
 	Processor* get_longest();
 };
 #endif

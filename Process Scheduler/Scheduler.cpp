@@ -183,7 +183,14 @@ void Scheduler::WorkSteal()
 	{
 		Process* Stolen;
 		Stolen = Longest->RemoveFromRDY();
-		Shortest->MovetoRDY(Stolen);
+		if (Stolen != nullptr)
+		{
+			if (Stolen->IsChild())
+			{
+				continue;
+			}
+			Shortest->MovetoRDY(Stolen);
+		}
 		Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
 	}
 }
@@ -309,6 +316,8 @@ void Scheduler::generate_outfile()
 }
 Processor* Scheduler::get_shortest()
 {
+	if (num_RR + num_SJF + num_FCFS == 0)
+		return nullptr;
 	int shortest_duration = Processor_ptr[0]->getExpTime();
 	Processor* shortest = Processor_ptr[0];
 	for (int i = 1;i < num_processors;i++)
@@ -368,18 +377,6 @@ Processor* Scheduler::get_shortest_RR()
 			ShortestRR = Processor_ptr[i];
 	}
 	return ShortestRR;
-}
-Processor* Scheduler::get_shortest()
-{
-	if (num_RR + num_SJF + num_FCFS == 0)
-		return nullptr;
-	Processor* Shortest = Processor_ptr[0];
-	for (int i = 1;i < num_RR + num_SJF + num_FCFS; i++)
-	{
-		if (Processor_ptr[i]->getExpTime() < Shortest->getExpTime())
-			Shortest = Processor_ptr[i];
-	}
-	return Shortest;
 }
 Processor* Scheduler::get_longest()
 {

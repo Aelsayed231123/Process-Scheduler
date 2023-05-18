@@ -49,7 +49,7 @@ void ProcessorFCFS::ScheduleAlgo()
 //Not Applicable for Forked Processes
 void ProcessorFCFS::CheckMigration()
 {
-	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()))
+	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
 	{
 		pSch->MigrateFCFSRR(RemoveRun());
 		fromRDY_to_run();
