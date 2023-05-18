@@ -23,6 +23,7 @@ public:
 	Process(int id, int arrT=0, int cpuT=0, int n=0, mypair<int,int>* P=nullptr);
 	void set_RT(int runT);
 	void set_TT(int terT);
+	int get_PID();
 	int get_ID();
 	int get_AT();
 	int get_RT();

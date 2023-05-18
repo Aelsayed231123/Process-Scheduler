@@ -113,7 +113,6 @@ bool  Process::IsChild()
 {
 	return Child;
 }
-}
 int Process::get_IOD()
 {
 	return IOD;

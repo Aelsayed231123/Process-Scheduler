@@ -269,7 +269,7 @@ void Scheduler::generate_outfile()
 		total_WT += ptr->get_WT();
 		total_RT += ptr->get_RT();
 		total_TRT += ptr->get_TRT();
-			out_file << ptr->get_TT() << "       " << ptr->get_PID() << "       " << ptr->get_AT() << "       " << ptr->get_CT() << "       " << ptr->get_IOD() << "       " << ptr->get_WT() << "       " << ptr->get_RT() << "       " << ptr->get_TRT() << endl;
+			out_file << ptr->get_TT() << "       " << ptr->get_ID() << "       " << ptr->get_AT() << "       " << ptr->get_CT() << "       " << ptr->get_IOD() << "       " << ptr->get_WT() << "       " << ptr->get_RT() << "       " << ptr->get_TRT() << endl;
 	}
 	out_file << "Processes: " << num_processes << endl;
 	out_file << "Avg WT = " << total_WT / num_processes << "         " << "Avg RT = " << total_RT / num_processes << "         " << "Avg TRT = " << total_TRT / num_processes << endl;
@@ -281,14 +281,14 @@ void Scheduler::generate_outfile()
 	out_file << "Prpcessor Load :" << endl;
 	for (int i = 0;i < num_processors;i++)
 	{
-		out_file << "P" << i + 1 < " = " << (Processor_ptr[i]->get_busytime() / total_TRT) * 100 << " %      ,      ";
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getBusyTime() / total_TRT) * 100 << " %      ,      ";
 	}
 	out_file << endl << "Processors Utiliz " << endl;
 	int total_utlization = 0;
 	for (int i = 0;i < num_processors;i++)
 	{
-		total_utlization += (Processor_ptr[i]->get_busytime() / (process_ptr[i]->get_busytime() + get_idletime())) * 100;
-		out_file << "P" << i + 1 < " = " << (Processor_ptr[i]->get_busytime() / (process_ptr[i]->get_busytime() + get_idletime())) * 100 << " %      ,      ";
+		total_utlization += (Processor_ptr[i]->getBusyTime() / (Processor_ptr[i]->getBusyTime() + Processor_ptr[i]->getIdealTime())) * 100;
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getBusyTime() / (Processor_ptr[i]->getBusyTime() + Processor_ptr[i]->getIdealTime())) * 100 << " %      ,      ";
 	}
 	out_file << "AVG Utlization = " << total_utlization / num_processors << endl;
 }
@@ -306,7 +306,6 @@ Processor* Scheduler::get_shortest()
 
 	}
 	return shortest;
-}
 }
 void Scheduler:: forK_a_child(Process* P)
 {
