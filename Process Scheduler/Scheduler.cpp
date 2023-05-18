@@ -25,6 +25,7 @@ Scheduler::Scheduler()
 	num_terminate = 0;
 	num_forked = 0;
 	num_killed = 0;
+	currentIOtime = 0;
 }
 //void Scheduler::Simulate()
 //{
@@ -298,4 +299,15 @@ Processor* Scheduler::get_shortest_RR()
 	}
 	return ShortestRR;
 }
+void Scheduler::from_run_to_blk(Process* P)
+{
+	BLKlist.enqueue(P);
+	if (BLKlist.isEmpty())
+	{
+		currentIOtime = 1;
+	}
+}
+void Scheduler:: from_blk_to_rdy(Process* P)
+{
 
+}

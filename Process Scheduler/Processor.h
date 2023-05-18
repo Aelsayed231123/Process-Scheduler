@@ -14,6 +14,7 @@ protected:
 	Process* RUN;
 	int ExpTime;
 	int BusyTime;
+	int TotalBusyTime;
 	int IdealTime;
 public:
 	Processor(Scheduler* psch);
@@ -21,7 +22,7 @@ public:
 	virtual void MovetoRDY(Process* P) = 0;
 	virtual Process* RemoveRun() = 0;
 	int getExpTime();
-	int getBusyTime();
+	int getTotalBusyTime();
 	int getIdealTime();
 	Process* getRUN();
 	float getpLoad();

@@ -11,30 +11,33 @@ void ProcessorRR::ScheduleAlgo()
 {
 	if (State == BUSY)
 	{
-
 		if (RUN->isDone())
 		{
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else if (BusyTime == TimeSlice)
-		{
-			Process* R= RemoveRun();
-			MovetoRDY(R);
-			fromRDY_to_run();
-			CheckMigration();
-		}
-		else if (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
-		{
-			CheckMigration();
-		}
 		else
 		{
-			RUN->increment_run_time();
-			BusyTime++;
+			if (BusyTime == TimeSlice)
+			{
+				Process* R = RemoveRun();
+				MovetoRDY(R);
+				fromRDY_to_run();
+				CheckMigration();
+			}
+			else if (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
+			{
+				CheckMigration();
+			}
+			else
+			{
+				RUN->increment_run_time();
+				BusyTime++;
+			}
+			TotalBusyTime++;
+			return;
 		}
-		return;
 	}
 	fromRDY_to_run();
 	CheckMigration();
@@ -97,6 +100,7 @@ bool ProcessorRR::fromRDY_to_run()
 		BusyTime = 1;
 		pSch->increment_num_run();
 		State = BUSY;
+		TotalBusyTime++;
 		return true;
 	}
 	else

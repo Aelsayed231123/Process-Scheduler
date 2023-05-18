@@ -17,6 +17,7 @@ private:
 	LinkedQueue<Process*>BLKlist;
 	LinkedQueue<Process*>Terminated;
 	int TimeStep;
+	int currentIOtime;
 	
 public:
 	Scheduler();
@@ -46,5 +47,8 @@ public:
 	Processor* get_shortest_FCFS();
 	Processor* get_shortest_SJF();
 	Processor* get_shortest_RR();
+	void from_run_to_blk(Process*P);
+	void from_blk_to_rdy(Process* P);
+
 };
 #endif

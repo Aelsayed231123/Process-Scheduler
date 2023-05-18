@@ -42,5 +42,7 @@ public:
 	void set_processor(Processor* P);
 	Processor* get_processor();
 	bool IsChild();
+	int get_current_IOD();
+	int get_current_IOR();
 };
 #endif

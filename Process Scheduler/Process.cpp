@@ -108,7 +108,20 @@ Processor* Process::get_processor()
 {
 	return Pr;
 }
-bool  Process::IsChild()
+bool Process::IsChild()
 {
 	return Child;
+}
+int Process::get_current_IOD()
+{
+	mypair<int, int>IOpair;
+	IOqueue.peek(IOpair);
+	return IOpair.second;
+
+}
+int Process::get_current_IOR()
+{
+	mypair<int, int>IOpair;
+	IOqueue.peek(IOpair);
+	return IOpair.first;
 }
