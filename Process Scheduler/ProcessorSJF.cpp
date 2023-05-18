@@ -35,6 +35,20 @@ void ProcessorSJF::ScheduleAlgo()
 	}
 	fromRDY_to_run();
 }
+Process* ProcessorSJF::RemoveFromRDY()
+{
+	if (Ready.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First;
+		Ready.dequeue(First);
+		ExpTime -= First->get_CT();
+		return First;
+	}
+}
 Process*  ProcessorSJF::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();

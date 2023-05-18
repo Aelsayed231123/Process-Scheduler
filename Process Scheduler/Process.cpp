@@ -8,6 +8,7 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	TRT = -1;
 	WT = -1;
 	RunTime = 0;
+	IOD = 0;
 	Childptr = nullptr;
 	Pr = nullptr;
 	Child = false;
@@ -124,4 +125,9 @@ int Process::get_current_IOR()
 	mypair<int, int>IOpair;
 	IOqueue.peek(IOpair);
 	return IOpair.first;
+}
+}
+int Process::get_IOD()
+{
+	return IOD;
 }

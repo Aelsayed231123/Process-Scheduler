@@ -10,6 +10,7 @@ class ProcessorFCFS :
 public:
     ProcessorFCFS(Scheduler* psch);
 	void MovetoRDY(Process* P);
+	Process* RemoveFromRDY();
 	void ScheduleAlgo();
 	 Process* RemoveRun();
 	bool Kill(int id);
