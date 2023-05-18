@@ -151,6 +151,22 @@ void Scheduler::LoadInputs()
 		finput.ignore(100000000, '\n');
 	}
 }
+bool Scheduler::MigrateRRSJF(Process* P)
+{
+	Processor* Shortest = get_shortest_SJF();
+	if (Shortest == nullptr)
+		return false;
+	Shortest->MovetoRDY(P);
+	return true;
+}
+bool Scheduler::MigrateFCFSRR(Process* P)
+{
+	Processor* Shortest = get_shortest_RR();
+	if (Shortest == nullptr)
+		return false;
+	Shortest->MovetoRDY(P);
+	return true;
+}
 void Scheduler::movetoBLK(Processor* Pr)
 {
 	BLKlist.enqueue(Pr->RemoveRun());
@@ -241,4 +257,28 @@ Processor* Scheduler::get_shortest_FCFS()
 			shortestFCFS = Processor_ptr[i];
 	}
 	return shortestFCFS;
+}
+Processor* Scheduler::get_shortest_SJF()
+{
+	if (num_RR == 0)
+		return nullptr;
+	Processor* ShortestSJF = Processor_ptr[num_RR];
+	for (int i = num_RR + 1;i < num_RR + num_SJF; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < ShortestSJF->getExpTime())
+			ShortestSJF = Processor_ptr[i];
+	}
+	return ShortestSJF;
+}
+Processor* Scheduler::get_shortest_SJF()
+{
+	if (num_SJF == 0)
+		return nullptr;
+	Processor* ShortestRR = Processor_ptr[0];
+	for (int i = 1;i < num_RR; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < ShortestRR->getExpTime())
+			ShortestRR = Processor_ptr[i];
+	}
+	return ShortestRR;
 }

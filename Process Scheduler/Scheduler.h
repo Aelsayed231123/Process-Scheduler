@@ -32,6 +32,7 @@ public:
 	void Print_Processes_inRun();
 	void Print_Processes_trem();
 	void Print_Processes_blk();
+	bool MigrateRRSJF(Process* P);
 	int get_num_run();
 	int get_num_blk();
 	int get_num_terminate();
@@ -40,5 +41,7 @@ public:
 	void forK_a_child(Process* P);
 	int get_fork_probability();
 	Processor* get_shortest_FCFS();
+	Processor* get_shortest_SJF();
+	Processor* get_shortest_RR();
 };
 #endif
