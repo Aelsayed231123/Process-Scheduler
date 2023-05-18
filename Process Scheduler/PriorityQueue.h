@@ -1,3 +1,5 @@
+#ifndef PRIORITYQUEUE
+#define PRIORITYQUEUE
 #pragma once
 #include"Node.h"
 #include"pair.h"
@@ -146,4 +148,4 @@ public:
 		return count;
 	}
 };
-
+#endif

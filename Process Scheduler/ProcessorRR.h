@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROCESSORRR_H
+#define PROCESSORRR_H
 #include "Processor.h"
 #include"LinkedQueue.h"
 #include"Process.h"
@@ -18,4 +19,6 @@ public:
 	Process* RemoveRun();
 	void print_RDY();
 	int get_countrdy();
+	void print_process_inRun();
 };
+#endif

@@ -1,10 +1,9 @@
+#pragma once
 #ifndef PROCESS
 #define PROCESS
-
-
 #include"LinkedQueue.h"
 #include"PriorityQueue.h"
-
+#include"Processor.h"
 class Process
 {
 	int pID;
@@ -18,6 +17,7 @@ class Process
 	int RunTime;
 	LinkedQueue<mypair<int,int>>IOqueue;
 	Process* Childptr;
+	Processor* Pr;
 public:
 	Process(int id, int arrT=0, int cpuT=0, int n=0, mypair<int,int>* P=nullptr);
 	void set_RT(int runT);
@@ -31,6 +31,7 @@ public:
 	int get_WT();
 	int getRunTime();
 	int get_remaining_time();
+	bool Child;
 	void set_child(Process* c);
 	Process* get_child();
 	bool request_IO(int time);
@@ -38,5 +39,7 @@ public:
 	bool operator==(int id);
 	void increment_run_time();
 	bool isDone();
+	void set_processor(Processor* P);
+	Processor* get_processor();
 };
 #endif

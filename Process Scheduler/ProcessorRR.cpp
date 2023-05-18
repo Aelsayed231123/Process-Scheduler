@@ -1,5 +1,6 @@
 #include "ProcessorRR.h"
 #include"Scheduler.h"
+#include"Process.h"
 #include<iostream>
 using namespace std;
 ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
@@ -83,5 +84,13 @@ bool ProcessorRR::fromRDY_to_run()
 		return true;
 	}
 	else
+	{
 		return false;
+		IdealTime++;
+	}
+}
+void ProcessorRR::print_process_inRun()
+{
+	if (RUN)
+		cout << *RUN;
 }

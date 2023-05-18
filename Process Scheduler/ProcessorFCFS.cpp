@@ -1,5 +1,6 @@
 #include "ProcessorFCFS.h"
 #include"Scheduler.h"
+#include"Process.h"
 #include<iostream>
 using namespace std;
 ProcessorFCFS::ProcessorFCFS(Scheduler* psch): Processor(psch)
@@ -93,7 +94,10 @@ bool ProcessorFCFS::fromRDY_to_run()
 		return true;
 	}
 	else
+	{
 		return false;
+		IdealTime++;
+	}
 }
 bool ProcessorFCFS::Fork(int fp)
 {
@@ -107,4 +111,30 @@ bool ProcessorFCFS::Fork(int fp)
 		Create = true;
 	}
 	return Create;
+}
+bool ProcessorFCFS::TerminateChild(int id)
+{
+	if (RUN->get_ID() == id)
+	{
+		Process* P = RUN;
+		pSch->Terminate(P);
+		fromRDY_to_run();
+		return true;
+	}
+	else
+	{
+		Process* P = nullptr;
+		P = Ready.SearchbyID(id);
+		if (P)
+		{
+			pSch->Terminate(P);
+			return true;
+		}
+	}
+	return false;
+}
+void ProcessorFCFS::print_process_inRun()
+{
+	if (RUN)
+		cout << *RUN;
 }

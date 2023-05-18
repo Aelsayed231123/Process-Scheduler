@@ -9,6 +9,8 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	WT = -1;
 	RunTime = 0;
 	Childptr = nullptr;
+	Pr = nullptr;
+	Child = false;
 	for (int i = 0; i < N; i++)
 	{
 		IOqueue.enqueue(P[i]);
@@ -97,4 +99,12 @@ int Process::get_remaining_time()
 Process* Process::get_child()
 {
 	return Childptr;
+}
+void Process::set_processor(Processor* P)
+{
+	Pr = P;
+}
+Processor* Process::get_processor()
+{
+	return Pr;
 }

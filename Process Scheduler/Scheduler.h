@@ -9,7 +9,7 @@ using namespace std;
 class Scheduler
 {
 private:
-	int num_FCFS, num_RR, num_SJF, RTF, MaxW, STL, ForkProb, num_processes, num_processors, num_run, num_blk, num_terminate;
+	int num_FCFS, num_RR, num_SJF, RTF, MaxW, STL, ForkProb, num_processes, num_processors, num_run, num_blk, num_terminate,num_forked,num_killed;
 	LinkedQueue<mypair<int,int>> sigKILL;
 	Process**process_ptr;
 	Processor**Processor_ptr;
