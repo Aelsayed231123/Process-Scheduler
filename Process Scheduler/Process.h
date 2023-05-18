@@ -41,5 +41,6 @@ public:
 	bool isDone();
 	void set_processor(Processor* P);
 	Processor* get_processor();
+	bool IsChild();
 };
 #endif

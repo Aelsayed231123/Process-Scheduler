@@ -108,3 +108,7 @@ Processor* Process::get_processor()
 {
 	return Pr;
 }
+bool  Process::IsChild()
+{
+	return Child;
+}
