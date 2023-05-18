@@ -9,7 +9,7 @@ using namespace std;
 class Scheduler
 {
 private:
-	int num_FCFS, num_RR, num_SJF, RTF, MaxW, STL, ForkProb, num_processes, num_processors, num_run, num_blk, num_terminate;
+	int num_FCFS, num_RR, num_SJF, RTF, MaxW, STL, ForkProb, num_processes, num_processors, num_run, num_blk, num_terminate,num_forked,num_killed;
 	LinkedQueue<mypair<int,int>> sigKILL;
 	Process**process_ptr;
 	Processor**Processor_ptr;
@@ -20,7 +20,7 @@ private:
 	
 public:
 	Scheduler();
-	void Simulate();
+	//void Simulate();
 	void Schedule(int& ind);
 	void LoadInputs();
 	void movetoBLK(Processor*Pr);
@@ -32,13 +32,22 @@ public:
 	void Print_Processes_inRun();
 	void Print_Processes_trem();
 	void Print_Processes_blk();
+	bool MigrateRRSJF(Process* P);
+	bool MigrateFCFSRR(Process* P);
 	int get_num_run();
 	int get_num_blk();
 	int get_num_terminate();
+	int get_RTF();
+	int get_MaxW();
 	void increment_num_run();
 	void decrement_num_run();
 	void generate_outfile();
 	Processor* get_shortest();
 
+	void forK_a_child(Process* P);
+	int get_fork_probability();
+	Processor* get_shortest_FCFS();
+	Processor* get_shortest_SJF();
+	Processor* get_shortest_RR();
 };
 #endif

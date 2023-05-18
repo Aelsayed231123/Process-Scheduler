@@ -10,6 +10,7 @@ private:
 public:
 	Node()
 	{
+		item = 0;
 		next = nullptr;
 	}
 	Node(const T& r_Item)

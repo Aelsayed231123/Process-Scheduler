@@ -1,5 +1,6 @@
 #include "ProcessorRR.h"
 #include"Scheduler.h"
+#include"Process.h"
 #include<iostream>
 using namespace std;
 ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
@@ -10,16 +11,23 @@ void ProcessorRR::ScheduleAlgo()
 {
 	if (State == BUSY)
 	{
+
 		if (RUN->isDone())
 		{
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
+			CheckMigration();
 		}
-		if (BusyTime == TimeSlice)
+		else if (BusyTime == TimeSlice)
 		{
 			Process* R= RemoveRun();
 			MovetoRDY(R);
 			fromRDY_to_run();
+			CheckMigration();
+		}
+		else if (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
+		{
+			CheckMigration();
 		}
 		else
 		{
@@ -29,6 +37,15 @@ void ProcessorRR::ScheduleAlgo()
 		return;
 	}
 	fromRDY_to_run();
+	CheckMigration();
+}
+void ProcessorRR::CheckMigration()
+{
+	while (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()))
+	{
+		pSch->MigrateRRSJF(RemoveRun());
+		fromRDY_to_run();
+	}
 }
 int ProcessorRR::getExpTime()
 {
@@ -83,5 +100,13 @@ bool ProcessorRR::fromRDY_to_run()
 		return true;
 	}
 	else
+	{
 		return false;
+		IdealTime++;
+	}
+}
+void ProcessorRR::print_process_inRun()
+{
+	if (RUN)
+		cout << *RUN;
 }

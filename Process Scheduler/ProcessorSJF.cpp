@@ -1,5 +1,6 @@
 #include "ProcessorSJF.h"
 #include"Scheduler.h"
+#include"Process.h"
 ProcessorSJF::ProcessorSJF(Scheduler* pS):Processor(pS)
 {
 }
@@ -69,5 +70,14 @@ bool ProcessorSJF::fromRDY_to_run()
 		State = BUSY;
 		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+		IdealTime++;
+	}
+}
+void ProcessorSJF::print_process_inRun()
+{
+	if (RUN)
+		cout << *RUN;
 }

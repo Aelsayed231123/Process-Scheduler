@@ -10,6 +10,8 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 	RunTime = 0;
 	IOD = 0;
 	Childptr = nullptr;
+	Pr = nullptr;
+	Child = false;
 	for (int i = 0; i < N; i++)
 	{
 		IOqueue.enqueue(P[i]);
@@ -54,17 +56,6 @@ int Process::get_WT()
 {
 	return WT;
 }
-bool Process::CreateChild(int fp)
-{
-	bool Create = false;
-	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
-	if (r >= fp)
-	{
-		Create = true;
-	}
-	return Create;
-}
 void Process::set_child(Process* c)
 {
 	Childptr = c;
@@ -101,6 +92,27 @@ int  Process::getRunTime()
 bool Process::isDone()
 {
 	return(RunTime == CT);
+}
+int Process::get_remaining_time()
+{
+	return(CT - RunTime);
+}
+Process* Process::get_child()
+{
+	return Childptr;
+}
+void Process::set_processor(Processor* P)
+{
+	Pr = P;
+}
+Processor* Process::get_processor()
+{
+	return Pr;
+}
+bool  Process::IsChild()
+{
+	return Child;
+}
 }
 int Process::get_IOD()
 {

@@ -25,6 +25,8 @@ Scheduler::Scheduler()
 	num_run = 0;
 	num_blk = 0;
 	num_terminate = 0;
+	num_forked = 0;
+	num_killed = 0;
 }
 //void Scheduler::Simulate()
 //{
@@ -154,6 +156,22 @@ void Scheduler::LoadInputs()
 		finput.ignore(100000000, '\n');
 	}
 }
+bool Scheduler::MigrateRRSJF(Process* P)
+{
+	Processor* Shortest = get_shortest_SJF();
+	if (Shortest == nullptr)
+		return false;
+	Shortest->MovetoRDY(P);
+	return true;
+}
+bool Scheduler::MigrateFCFSRR(Process* P)
+{
+	Processor* Shortest = get_shortest_RR();
+	if (Shortest == nullptr)
+		return false;
+	Shortest->MovetoRDY(P);
+	return true;
+}
 void Scheduler::movetoBLK(Processor* Pr)
 {
 	BLKlist.enqueue(Pr->RemoveRun());
@@ -161,6 +179,10 @@ void Scheduler::movetoBLK(Processor* Pr)
 }
 void Scheduler::Terminate(Process* P)
 {
+	if (P->get_child())
+	{
+		P->get_child()->get_processor()->TerminateChild(P->get_child()->get_ID());
+	}
 	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
 	num_terminate++;
@@ -210,6 +232,14 @@ int Scheduler::get_num_blk()
 int Scheduler::get_num_terminate()
 {
 	return num_terminate;
+}
+int Scheduler::get_RTF()
+{
+	return RTF;
+}
+int Scheduler::get_MaxW()
+{
+	return MaxW;
 }
 void Scheduler::increment_num_run()
 {
@@ -277,3 +307,52 @@ Processor* Scheduler::get_shortest()
 	}
 	return shortest;
 }
+}
+void Scheduler:: forK_a_child(Process* P)
+{
+	int new_id = num_processes + P->get_ID();
+	Process* child = new Process(new_id, TimeStep, P->get_remaining_time());
+	P->set_child(child);
+	get_shortest_FCFS()->MovetoRDY(P);
+	P->set_processor(get_shortest_FCFS());
+	num_forked++;
+}
+int Scheduler::get_fork_probability()
+{
+	return ForkProb;
+}
+Processor* Scheduler::get_shortest_FCFS()
+{
+	Processor* shortestFCFS = Processor_ptr[num_SJF + num_RR];
+	for (int i = num_SJF + num_RR + 1; i < num_SJF + num_RR + num_FCFS; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < shortestFCFS->getExpTime())
+			shortestFCFS = Processor_ptr[i];
+	}
+	return shortestFCFS;
+}
+Processor* Scheduler::get_shortest_SJF()
+{
+	if (num_RR == 0)
+		return nullptr;
+	Processor* ShortestSJF = Processor_ptr[num_RR];
+	for (int i = num_RR + 1;i < num_RR + num_SJF; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < ShortestSJF->getExpTime())
+			ShortestSJF = Processor_ptr[i];
+	}
+	return ShortestSJF;
+}
+Processor* Scheduler::get_shortest_RR()
+{
+	if (num_SJF == 0)
+		return nullptr;
+	Processor* ShortestRR = Processor_ptr[0];
+	for (int i = 1;i < num_RR; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < ShortestRR->getExpTime())
+			ShortestRR = Processor_ptr[i];
+	}
+	return ShortestRR;
+}
+

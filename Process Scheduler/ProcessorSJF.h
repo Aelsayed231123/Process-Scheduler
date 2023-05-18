@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROCESSORSJF_H
+#define PROCESSORRSJF_H
 #include"Process.h"
 #include "Processor.h"
 
@@ -13,5 +14,6 @@ public:
 	Process* RemoveRun();
 	void print_RDY();
 	int get_countrdy();
+	void print_process_inRun();
 };
-
+#endif
