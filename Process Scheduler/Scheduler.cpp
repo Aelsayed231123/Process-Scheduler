@@ -297,31 +297,16 @@ void Scheduler::generate_outfile()
 	out_file << "Prpcessor Load :" << endl;
 	for (int i = 0;i < num_processors;i++)
 	{
-		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getBusyTime() / total_TRT) * 100 << " %      ,      ";
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / total_TRT) * 100 << " %      ,      ";
 	}
 	out_file << endl << "Processors Utiliz " << endl;
 	int total_utlization = 0;
 	for (int i = 0;i < num_processors;i++)
 	{
-		total_utlization += (Processor_ptr[i]->getBusyTime() / (Processor_ptr[i]->getBusyTime() + Processor_ptr[i]->getIdealTime())) * 100;
-		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getBusyTime() / (Processor_ptr[i]->getBusyTime() + Processor_ptr[i]->getIdealTime())) * 100 << " %      ,      ";
+		total_utlization += (Processor_ptr[i]->getTotalBusyTime() / (Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100;
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / (Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100 << " %      ,      ";
 	}
 	out_file << "AVG Utlization = " << total_utlization / num_processors << endl;
-}
-Processor* Scheduler::get_shortest()
-{
-	int shortest_duration = Processor_ptr[0]->getExpTime();
-	Processor* shortest = Processor_ptr[0];
-	for (int i = 1;i < num_processors;i++)
-	{
-		if (Processor_ptr[i]->getExpTime() < shortest_duration)
-		{
-			shortest_duration = Processor_ptr[i]->getExpTime();
-			shortest = Processor_ptr[i];
-		}
-
-	}
-	return shortest;
 }
 void Scheduler:: forK_a_child(Process* P)
 {

@@ -45,13 +45,11 @@ public:
 	void decrement_num_run();
 	void generate_outfile();
 	Processor* get_shortest();
-
 	void forK_a_child(Process* P);
 	int get_fork_probability();
 	Processor* get_shortest_FCFS();
 	Processor* get_shortest_SJF();
 	Processor* get_shortest_RR();
-	Processor* get_shortest();
 	Processor* get_longest();
 	void from_run_to_blk(Process*P);
 	void from_blk_to_rdy(Process* P);

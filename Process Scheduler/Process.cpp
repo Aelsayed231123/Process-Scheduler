@@ -126,7 +126,6 @@ int Process::get_current_IOR()
 	IOqueue.peek(IOpair);
 	return IOpair.first;
 }
-}
 int Process::get_IOD()
 {
 	return IOD;
