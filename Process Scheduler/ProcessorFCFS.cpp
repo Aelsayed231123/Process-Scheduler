@@ -54,6 +54,19 @@ void ProcessorFCFS::CheckMigration()
 		fromRDY_to_run();
 	}
 }
+Process* ProcessorFCFS::RemoveFromRDY()
+{
+	if (Ready.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First = (Ready.RemoveFirst())->getItem();
+		ExpTime -= First->get_CT();
+		return First;
+	}
+}
 Process* ProcessorFCFS::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();

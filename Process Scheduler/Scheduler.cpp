@@ -167,6 +167,21 @@ bool Scheduler::MigrateFCFSRR(Process* P)
 	Shortest->MovetoRDY(P);
 	return true;
 }
+//Called Each STL time ( Time step % STL == 0 )
+//No forked processes
+void Scheduler::WorkSteal()
+{
+	Processor* Longest = get_longest();
+	Processor* Shortest = get_shortest();
+	float Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
+	while (Steallimit > 0.4)
+	{
+		Process* Stolen;
+		Stolen = Longest->RemoveFromRDY();
+		Shortest->MovetoRDY(Stolen);
+		Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
+	}
+}
 void Scheduler::movetoBLK(Processor* Pr)
 {
 	BLKlist.enqueue(Pr->RemoveRun());
@@ -289,4 +304,28 @@ Processor* Scheduler::get_shortest_RR()
 			ShortestRR = Processor_ptr[i];
 	}
 	return ShortestRR;
+}
+Processor* Scheduler::get_shortest()
+{
+	if (num_RR + num_SJF + num_FCFS == 0)
+		return nullptr;
+	Processor* Shortest = Processor_ptr[0];
+	for (int i = 1;i < num_RR + num_SJF + num_FCFS; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() < Shortest->getExpTime())
+			Shortest = Processor_ptr[i];
+	}
+	return Shortest;
+}
+Processor* Scheduler::get_longest()
+{
+	if (num_RR + num_SJF + num_FCFS == 0)
+		return nullptr;
+	Processor* Longest = Processor_ptr[0];
+	for (int i = 1;i < num_RR + num_SJF + num_FCFS; i++)
+	{
+		if (Processor_ptr[i]->getExpTime() > Longest->getExpTime())
+			Longest = Processor_ptr[i];
+	}
+	return Longest;
 }

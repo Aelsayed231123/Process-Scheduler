@@ -46,6 +46,20 @@ void ProcessorRR::CheckMigration()
 		fromRDY_to_run();
 	}
 }
+Process* ProcessorRR::RemoveFromRDY()
+{
+	if (RDY.isEmpty())
+	{
+		return nullptr;
+	}
+	else
+	{
+		Process* First;
+		RDY.dequeue(First);
+		ExpTime -= First->get_CT();
+		return First;
+	}
+}
 int ProcessorRR::getExpTime()
 {
 	return ExpTime;

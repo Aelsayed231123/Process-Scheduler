@@ -34,6 +34,7 @@ public:
 	void Print_Processes_blk();
 	bool MigrateRRSJF(Process* P);
 	bool MigrateFCFSRR(Process* P);
+	void WorkSteal();
 	int get_num_run();
 	int get_num_blk();
 	int get_num_terminate();
@@ -46,5 +47,7 @@ public:
 	Processor* get_shortest_FCFS();
 	Processor* get_shortest_SJF();
 	Processor* get_shortest_RR();
+	Processor* get_shortest();
+	Processor* get_longest();
 };
 #endif

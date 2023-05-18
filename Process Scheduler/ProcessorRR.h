@@ -13,6 +13,7 @@ private:
 public:
 	ProcessorRR(Scheduler* psch, int time);
 	void MovetoRDY(Process* P);
+	Process* RemoveFromRDY();
 	void ScheduleAlgo();
 	int getExpTime();
 	Process* RemoveRun();

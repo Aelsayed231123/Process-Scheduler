@@ -18,6 +18,7 @@ public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
 	virtual void MovetoRDY(Process* P) = 0;
+	virtual Process* RemoveFromRDY() = 0;
 	virtual Process* RemoveRun() = 0;
 	int getExpTime();
 	Process* getRUN();
