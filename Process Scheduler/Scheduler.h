@@ -33,9 +33,12 @@ public:
 	void Print_Processes_trem();
 	void Print_Processes_blk();
 	bool MigrateRRSJF(Process* P);
+	bool MigrateFCFSRR(Process* P);
 	int get_num_run();
 	int get_num_blk();
 	int get_num_terminate();
+	int get_RTF();
+	int get_MaxW();
 	void increment_num_run();
 	void decrement_num_run();
 	void forK_a_child(Process* P);

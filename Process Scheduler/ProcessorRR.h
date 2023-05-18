@@ -17,5 +17,6 @@ public:
 	int getExpTime();
 	Process* RemoveRun();
 	void print_RDY();
+	void CheckMigration();
 	int get_countrdy();
 };

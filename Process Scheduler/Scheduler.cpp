@@ -224,6 +224,14 @@ int Scheduler::get_num_terminate()
 {
 	return num_terminate;
 }
+int Scheduler::get_RTF()
+{
+	return RTF;
+}
+int Scheduler::get_MaxW()
+{
+	return MaxW;
+}
 void Scheduler::increment_num_run()
 {
 	num_run++;
@@ -250,7 +258,7 @@ int Scheduler::get_fork_probability()
 }
 Processor* Scheduler::get_shortest_FCFS()
 {
-	Processor* shortestFCFS = Processor_ptr[num_SJF + num_RR + 1];
+	Processor* shortestFCFS = Processor_ptr[num_SJF + num_RR];
 	for (int i = num_SJF + num_RR + 1; i < num_SJF + num_RR + num_FCFS; i++)
 	{
 		if (Processor_ptr[i]->getExpTime() < shortestFCFS->getExpTime())
@@ -270,7 +278,7 @@ Processor* Scheduler::get_shortest_SJF()
 	}
 	return ShortestSJF;
 }
-Processor* Scheduler::get_shortest_SJF()
+Processor* Scheduler::get_shortest_RR()
 {
 	if (num_SJF == 0)
 		return nullptr;

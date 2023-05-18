@@ -13,6 +13,7 @@ public:
 	 Process* RemoveRun();
 	bool Kill(int id);
 	void print_RDY();
+	void CheckMigration();
 	int get_countrdy();
 	bool Fork(int fp);
 };
