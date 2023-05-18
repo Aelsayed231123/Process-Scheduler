@@ -1,9 +1,9 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
-#include"Process.h"
 #include<iostream>
 using namespace std;
 class Scheduler;
+class Process;
 enum CPUState { IDLE, BUSY };
 class Processor
 {
@@ -14,6 +14,7 @@ protected:
 	Process* RUN;
 	int ExpTime;
 	int BusyTime;
+	int IdealTime;
 public:
 	Processor(Scheduler* psch);
 	virtual void ScheduleAlgo() = 0;
@@ -21,14 +22,17 @@ public:
 	virtual Process* RemoveFromRDY() = 0;
 	virtual Process* RemoveRun() = 0;
 	int getExpTime();
+	int getBusyTime();
+	int getIdealTime();
 	Process* getRUN();
 	float getpLoad();
 	float getpUtil();
 	bool isBusy();
 	virtual void print_RDY() = 0;
-	void print_process_inRun();
+	virtual void print_process_inRun() = 0;
 	bool Busymorethan1();
 	virtual bool Kill(int id);
+	virtual bool TerminateChild(int id);
 
 };
 #endif

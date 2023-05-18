@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROCESSORRR_H
+#define PROCESSORRR_H
 #include "Processor.h"
 #include"LinkedQueue.h"
 #include"Process.h"
@@ -8,7 +9,6 @@ class ProcessorRR :
 private:
 	LinkedQueue<Process*> RDY;
 	int TimeSlice;
-	int RunTime;
 	bool fromRDY_to_run();
 public:
 	ProcessorRR(Scheduler* psch, int time);
@@ -20,4 +20,6 @@ public:
 	void print_RDY();
 	void CheckMigration();
 	int get_countrdy();
+	void print_process_inRun();
 };
+#endif

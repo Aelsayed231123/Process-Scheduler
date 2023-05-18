@@ -23,6 +23,8 @@ Scheduler::Scheduler()
 	num_run = 0;
 	num_blk = 0;
 	num_terminate = 0;
+	num_forked = 0;
+	num_killed = 0;
 }
 //void Scheduler::Simulate()
 //{
@@ -189,6 +191,10 @@ void Scheduler::movetoBLK(Processor* Pr)
 }
 void Scheduler::Terminate(Process* P)
 {
+	if (P->get_child())
+	{
+		P->get_child()->get_processor()->TerminateChild(P->get_child()->get_ID());
+	}
 	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
 	num_terminate++;
@@ -266,6 +272,8 @@ void Scheduler:: forK_a_child(Process* P)
 	Process* child = new Process(new_id, TimeStep, P->get_remaining_time());
 	P->set_child(child);
 	get_shortest_FCFS()->MovetoRDY(P);
+	P->set_processor(get_shortest_FCFS());
+	num_forked++;
 }
 int Scheduler::get_fork_probability()
 {

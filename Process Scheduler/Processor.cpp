@@ -10,6 +10,7 @@ Processor::Processor(Scheduler* psch)
 	RUN = nullptr;
 	ExpTime = 0;
 	BusyTime = 0;
+	IdealTime = 0;
 }
 Process* Processor::getRUN()
 {
@@ -31,11 +32,6 @@ bool Processor::isBusy()
 {
 	return (State==BUSY);
 }
-void Processor::print_process_inRun()
-{
-	if (RUN)
-		cout << *RUN ;
-}
 bool Processor:: Busymorethan1()
 {
 	return(BusyTime > 1);
@@ -44,3 +40,15 @@ bool Processor:: Busymorethan1()
 {
 	return false;
 }
+ bool Processor::TerminateChild(int id)
+ {
+	 return false;
+ }
+ int  Processor::getBusyTime()
+ {
+	 return BusyTime;
+ }
+ int Processor::getIdealTime()
+ {
+	 return IdealTime;
+ }
