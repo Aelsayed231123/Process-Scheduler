@@ -26,10 +26,15 @@ void ProcessorFCFS::ScheduleAlgo()
 		{
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
+			CheckMigration();
 		}
 		else if (Fork(pSch->get_fork_probability()))
 		{
 			pSch->forK_a_child(RUN);
+		}
+		else if (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()))
+		{
+			CheckMigration();
 		}
 		else
 		{
@@ -39,6 +44,16 @@ void ProcessorFCFS::ScheduleAlgo()
 		return;
 	}
 	fromRDY_to_run();
+	CheckMigration();
+}
+//Not Applicable for Forked Processes
+void ProcessorFCFS::CheckMigration()
+{
+	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()))
+	{
+		pSch->MigrateFCFSRR(RemoveRun());
+		fromRDY_to_run();
+	}
 }
 Process* ProcessorFCFS::RemoveRun()
 {
