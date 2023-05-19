@@ -17,13 +17,13 @@ class Process
 	int IOD;
 	int RunTime;
 	LinkedQueue<mypair<int,int>>IOqueue;
-	Process* Childptr;
+	Process* LChildptr;
+	Process* RChildptr;
 	Processor* Pr;
 public:
 	Process(int id, int arrT=0, int cpuT=0, int n=0, mypair<int,int>* P=nullptr);
 	void set_RT(int runT);
 	void set_TT(int terT);
-	int get_PID();
 	int get_ID();
 	int get_AT();
 	int get_RT();
@@ -34,14 +34,17 @@ public:
 	int getRunTime();
 	int get_remaining_time();
 	bool Child;
-	void set_child(Process* c);
-	Process* get_child();
+	void set_Lchild(Process* c);
+	void set_Rchild(Process* c);
+	Process* get_Lchild();
+	Process* get_Rchild();
 	bool request_IO();
 	friend ostream& operator << (ostream& out, Process& c);
 	bool operator==(int id);
 	void increment_run_time();
 	bool isDone();
 	int get_IOD();
+	void increment_IOD();
 	void set_processor(Processor* P);
 	Processor* get_processor();
 	bool IsChild();

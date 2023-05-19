@@ -48,9 +48,10 @@ void ProcessorFCFS::ScheduleAlgo()
 			{
 				RUN->increment_run_time();
 				BusyTime++;
+				ExpTime--;
 			}
-			TotalBusyTime++;
 		}
+		TotalBusyTime++;
 		return;
 	}
 	fromRDY_to_run();
@@ -82,7 +83,7 @@ Process* ProcessorFCFS::RemoveFromRDY()
 }
 Process* ProcessorFCFS::RemoveRun()
 {
-	ExpTime -= RUN->get_CT();
+	ExpTime -= (RUN->get_CT()-BusyTime);
 	Process* temp = RUN;
 	RUN = nullptr;
 	pSch->decrement_num_run();
@@ -108,7 +109,7 @@ bool ProcessorFCFS::Kill(int id)
 	p = Ready.SearchbyID(id);
 	if (p)
 	{
-		pSch->Terminate(p);
+		pSch->TerminateKilled(p);
 		return true;
 	}
 	return false;
@@ -139,21 +140,20 @@ bool ProcessorFCFS::fromRDY_to_run()
 		pSch->increment_num_run();
 		BusyTime = 1;
 		State = BUSY;
+		Pr->set_RT(pSch->get_time_step());
 		return true;
-		TotalBusyTime++;
 	}
 	else
 	{
-		return false;
 		IdealTime++;
+		return false;
 	}
 }
 bool ProcessorFCFS::Fork(int fp)
 {
-	if (RUN->get_child())
+	if (RUN->get_Lchild()&&RUN->get_Rchild())
 		return false;
 	bool Create = false;
-	srand((unsigned)time(NULL));
 	float r = ((double)rand() / (RAND_MAX)) * 100;
 	if (r <= fp)
 	{
