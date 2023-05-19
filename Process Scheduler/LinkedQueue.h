@@ -17,10 +17,9 @@ public:
 		frontPtr = nullptr;
 		count = 0;
 	}
-
 	bool isEmpty() const
 	{
-		return (frontPtr == nullptr);
+		return (count==0);
 	}
 	bool enqueue(const T& newEntry)
 	{

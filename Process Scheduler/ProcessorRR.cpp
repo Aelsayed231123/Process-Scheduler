@@ -17,9 +17,15 @@ void ProcessorRR::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else
+		if (isBusy())
 		{
-			if (BusyTime == TimeSlice)
+			if (RUN->request_IO())
+			{
+				pSch->from_run_to_blk(RemoveRun());
+				fromRDY_to_run();
+				CheckMigration();
+			}
+			if (isBusy()&&(BusyTime == TimeSlice))
 			{
 				Process* R = RemoveRun();
 				MovetoRDY(R);
@@ -30,11 +36,12 @@ void ProcessorRR::ScheduleAlgo()
 			{
 				CheckMigration();
 			}
-			else
+			else if(isBusy())
 			{
 				RUN->increment_run_time();
 				BusyTime++;
 			}
+			if(isBusy())
 			TotalBusyTime++;
 			return;
 		}

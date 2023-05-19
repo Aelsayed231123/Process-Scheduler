@@ -28,9 +28,15 @@ void ProcessorFCFS::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else
+		 if (isBusy())
 		{
-			if (Fork(pSch->get_fork_probability()))
+			if (RUN->request_IO())
+			{
+				pSch->from_run_to_blk(RemoveRun());
+				fromRDY_to_run();
+				CheckMigration();
+			}
+			if (isBusy()&&Fork(pSch->get_fork_probability()))
 			{
 				pSch->forK_a_child(RUN);
 			}
@@ -38,7 +44,7 @@ void ProcessorFCFS::ScheduleAlgo()
 			{
 				CheckMigration();
 			}
-			else
+			else if(isBusy())
 			{
 				RUN->increment_run_time();
 				BusyTime++;
@@ -138,7 +144,7 @@ bool ProcessorFCFS::Fork(int fp)
 		return false;
 	bool Create = false;
 	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
+	float r = ((double)rand() / (RAND_MAX))*100;
 	if (r >= fp)
 	{
 		Create = true;

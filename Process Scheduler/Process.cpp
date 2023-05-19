@@ -1,7 +1,7 @@
 #include<iostream>
 #include<cstdlib>
 #include "Process.h"
-Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id), AT(arrT), CT(cpuT), N(n)
+Process::Process(int id, int arrT, int cpuT, int n, mypair<int, int>* P) :pID(id), AT(arrT), CT(cpuT), N(n)
 {
 	RT = -1;
 	TT = -1;
@@ -19,8 +19,8 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int,int>* P) :pID(id)
 }
 void Process::set_RT(int readyT)
 {
-	if(RT==-1)
-	RT = readyT - AT;
+	if (RT == -1)
+		RT = readyT - AT;
 }
 void Process::set_TT(int terT)
 {
@@ -60,15 +60,17 @@ void Process::set_child(Process* c)
 {
 	Childptr = c;
 }
-bool Process::request_IO(int time)
+bool Process::request_IO()
 {
-	int t = time - RT;
 	bool request = false;
-	mypair<int,int>curIO;
-	if (IOqueue.peek(curIO))
+	mypair<int, int>curIO;
+	if (!IOqueue.isEmpty())
 	{
-		if (curIO.first == t)
-			request = true;
+		if (IOqueue.peek(curIO))
+		{
+			if (curIO.first == RunTime)
+				request = true;
+		}
 	}
 	return request;
 }
@@ -116,17 +118,30 @@ bool Process::IsChild()
 int Process::get_current_IOD()
 {
 	mypair<int, int>IOpair;
-	IOqueue.peek(IOpair);
-	return IOpair.second;
-
+	if (!IOqueue.isEmpty())
+	{
+		IOqueue.peek(IOpair);
+		return IOpair.second;
+	}
+	else return -1;
 }
 int Process::get_current_IOR()
 {
 	mypair<int, int>IOpair;
-	IOqueue.peek(IOpair);
-	return IOpair.first;
+	if (!IOqueue.isEmpty())
+	{
+		IOqueue.peek(IOpair);
+		return IOpair.first;
+	}
+	else
+		return -1;
 }
 int Process::get_IOD()
 {
 	return IOD;
+}
+void Process::RemoveCurrentIOpair()
+{
+	mypair<int, int>IOpair;
+	IOqueue.dequeue(IOpair);
 }

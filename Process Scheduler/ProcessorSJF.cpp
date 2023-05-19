@@ -25,11 +25,19 @@ void ProcessorSJF::ScheduleAlgo()
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
 		}
-		else
+		if (isBusy())
 		{
-			RUN->increment_run_time();
-			TotalBusyTime++;
-			BusyTime++;
+			if (RUN->request_IO())
+			{
+				pSch->from_run_to_blk(RemoveRun());
+				fromRDY_to_run();
+			}
+			else if(isBusy())
+			{
+				RUN->increment_run_time();
+				TotalBusyTime++;
+				BusyTime++;
+			}
 		}
 		return;
 	}

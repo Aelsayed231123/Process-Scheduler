@@ -21,8 +21,8 @@ private:
 	
 public:
 	Scheduler();
-	//void Simulate();
-	void Schedule(int& ind);
+	void Simulate();
+	void Schedule();
 	void LoadInputs();
 	void movetoBLK(Processor*Pr);
 	void Terminate(Process* P);
@@ -52,7 +52,7 @@ public:
 	Processor* get_shortest_RR();
 	Processor* get_longest();
 	void from_run_to_blk(Process*P);
-	void from_blk_to_rdy(Process* P);
+	void from_blk_to_rdy();
 
 };
 #endif
