@@ -324,11 +324,20 @@ Processor* Scheduler::get_shortest()
 {
 	if (num_RR + num_SJF + num_FCFS == 0)
 		return nullptr;
-	int shortest_duration = Processor_ptr[0]->getExpTime();
-	Processor* shortest = Processor_ptr[0];
-	for (int i = 1;i < num_processors;i++)
+	int i = 0;
+	
+	int shortest_duration;
+	for (;i < num_processors;i++)
 	{
-		if (Processor_ptr[i]->getExpTime() < shortest_duration)
+		if (!Processor_ptr[i]->isOverheated())
+		{
+			shortest_duration = Processor_ptr[i]->getExpTime();
+			break;
+		}
+	}
+	for (i < num_processors;i++)
+	{
+		if (!Processor_ptr[i]->isOverheated() && Processor_ptr[i]->getExpTime() < shortest_duration)
 		{
 			shortest_duration = Processor_ptr[i]->getExpTime();
 			shortest = Processor_ptr[i];

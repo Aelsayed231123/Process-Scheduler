@@ -18,7 +18,24 @@ void ProcessorSJF::MovetoRDY(Process* P)
 }
 void ProcessorSJF::ScheduleAlgo()
 {
-	if (isBusy())
+	if (will_overheat() && State != OVERHEATED)
+	{
+		Process* ptr = RUN;
+		pSch->movetoRDY(ptr);
+		RUN = nullptr;
+		while (!Ready.isEmpty())
+		{
+			Ready.dequeue(ptr);
+			pSch->movetoRDY(ptr);
+		}
+		stopping_time--;
+		if (stopping_time == 0)
+		{
+			State = IDLE;
+		}
+
+	}
+	else if (isBusy())
 	{
 		if (RUN->isDone())
 		{
@@ -33,6 +50,7 @@ void ProcessorSJF::ScheduleAlgo()
 		}
 		return;
 	}
+	else if(!isBusy())
 	fromRDY_to_run();
 }
 Process* ProcessorSJF::RemoveFromRDY()

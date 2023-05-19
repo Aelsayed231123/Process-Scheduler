@@ -33,7 +33,7 @@ void ProcessorFCFS::ScheduleAlgo()
 		stopping_time--;
 		if (stopping_time == 0)
 		{
-			state = IDLE;
+			State = IDLE;
 		}
 
 	}

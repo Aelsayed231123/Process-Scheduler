@@ -9,20 +9,20 @@ ProcessorRR::ProcessorRR(Scheduler* psch, int time) :Processor(psch)
 }
 void ProcessorRR::ScheduleAlgo()
 {
-	if (will_overheat() && state != OVERHEATED)
+	if (will_overheat() && State != OVERHEATED)
 	{
-		Processor* ptr = RUN;
+		Process* ptr = RUN;
 		pSch->movetoRDY(ptr);
 		RUN = nullptr;
-		while (!Ready.isEmpty())
+		while (!RDY.isEmpty())
 		{
-			ptr = RemoveFromRDY();
+			RDY.dequeue(ptr);
 			pSch->movetoRDY(ptr);
 		}
 		stopping_time--;
 		if (stopping_time == 0)
 		{
-			state = IDLE;
+			State = IDLE;
 		}
 
 	}
