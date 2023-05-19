@@ -38,5 +38,7 @@ public:
 	bool isOverheated();
 	void decrement_stopping_time();
 	bool will_overheat();
+	virtual Process* get_first() = 0;
+
 };
 #endif

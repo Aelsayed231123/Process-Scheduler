@@ -16,5 +16,6 @@ public:
 	void print_RDY();
 	int get_countrdy();
 	void print_process_inRun();
+	Process* get_first();
 };
 #endif

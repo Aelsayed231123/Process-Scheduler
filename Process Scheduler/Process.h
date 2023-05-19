@@ -36,7 +36,7 @@ public:
 	bool Child;
 	void set_child(Process* c);
 	Process* get_child();
-	bool request_IO(int time);
+	bool request_IO();
 	friend ostream& operator << (ostream& out, Process& c);
 	bool operator==(int id);
 	void increment_run_time();
@@ -47,5 +47,6 @@ public:
 	bool IsChild();
 	int get_current_IOD();
 	int get_current_IOR();
+	void RemoveCurrentIOpair();
 };
 #endif

@@ -45,9 +45,15 @@ void ProcessorFCFS::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		else
+		else if (isBusy())
 		{
-			if (Fork(pSch->get_fork_probability()))
+			if (RUN->request_IO())
+			{
+				pSch->from_run_to_blk(RemoveRun());
+				fromRDY_to_run();
+				CheckMigration();
+			}
+			else if (isBusy() && Fork(pSch->get_fork_probability()))
 			{
 				pSch->forK_a_child(RUN);
 			}
@@ -55,7 +61,7 @@ void ProcessorFCFS::ScheduleAlgo()
 			{
 				CheckMigration();
 			}
-			else
+			if (isBusy())
 			{
 				RUN->increment_run_time();
 				BusyTime++;
@@ -75,10 +81,12 @@ void ProcessorFCFS::ScheduleAlgo()
 //Not Applicable for Forked Processes
 void ProcessorFCFS::CheckMigration()
 {
-	while (RUN != nullptr && ((pSch->get_time_step()-RUN->get_AT()-RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
+	while (RUN != nullptr && ((pSch->get_time_step() - RUN->get_AT() - RUN->getRunTime()) > pSch->get_MaxW()) && !(RUN->IsChild()))
 	{
-		pSch->MigrateFCFSRR(RemoveRun());
-		fromRDY_to_run();
+		if (pSch->MigrateFCFSRR(this))
+			fromRDY_to_run();
+		else
+			break;
 	}
 }
 Process* ProcessorFCFS::RemoveFromRDY()
@@ -106,6 +114,14 @@ Process* ProcessorFCFS::RemoveRun()
 }
 bool ProcessorFCFS::Kill(int id)
 {
+	if (RUN)
+	{
+		if (RUN->get_ID() == id)
+		{
+			pSch->TerminateKilled(RemoveRun());
+				return true;
+		}
+	}
 	if (Ready.isEmpty())
 	{
 		return false;
@@ -160,8 +176,8 @@ bool ProcessorFCFS::Fork(int fp)
 		return false;
 	bool Create = false;
 	srand((unsigned)time(NULL));
-	float r = ((double)rand() / (RAND_MAX));
-	if (r >= fp)
+	float r = ((double)rand() / (RAND_MAX)) * 100;
+	if (r <= fp)
 	{
 		Create = true;
 	}
@@ -169,12 +185,14 @@ bool ProcessorFCFS::Fork(int fp)
 }
 bool ProcessorFCFS::TerminateChild(int id)
 {
-	if (RUN->get_ID() == id)
+	if (RUN)
 	{
-		Process* P = RUN;
-		pSch->Terminate(P);
-		fromRDY_to_run();
-		return true;
+		if (RUN->get_ID() == id)
+		{
+			pSch->Terminate(RemoveRun());
+			fromRDY_to_run();
+			return true;
+		}
 	}
 	else
 	{
@@ -205,4 +223,10 @@ Process* ProcessorFCFS::RemoveFromRDY()
 		ExpTime -= First->get_CT();
 		return First;
 	}
+}
+}
+Process* ProcessorFCFS:: get_first()
+{
+	Process* first = Ready.getHead();
+	return first;
 }

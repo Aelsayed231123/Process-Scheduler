@@ -21,5 +21,6 @@ public:
 	bool TerminateChild(int id);
 	void print_process_inRun();
 	Process* RemoveFromRDY();
+	Process* get_first();
 };
 #endif

@@ -21,5 +21,6 @@ public:
 	void CheckMigration();
 	int get_countrdy();
 	void print_process_inRun();
+	Process* get_first();
 };
 #endif

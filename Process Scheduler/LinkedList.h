@@ -149,5 +149,11 @@ public:
 		}
 		return 0;
 	}
+	T getHead()
+	{
+		if (!Head)
+			return nullptr;
+		return Head->getItem();
+	}
 };
 #endif
