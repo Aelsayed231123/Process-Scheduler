@@ -52,9 +52,10 @@ void ProcessorSJF::ScheduleAlgo()
 			if (isBusy())
 			{
 				RUN->increment_run_time();
-				TotalBusyTime++;
 				BusyTime++;
+				ExpTime--;
 			}
+			TotalBusyTime++;
 		}
 		return;
 	}
@@ -77,7 +78,7 @@ Process* ProcessorSJF::RemoveFromRDY()
 }
 Process* ProcessorSJF::RemoveRun()
 {
-	ExpTime -= RUN->get_CT();
+	ExpTime -= (RUN->get_CT() - BusyTime);
 	Process* temp = RUN;
 	RUN = nullptr;
 	pSch->decrement_num_run();
@@ -109,13 +110,13 @@ bool ProcessorSJF::fromRDY_to_run()
 		pSch->increment_num_run();
 		BusyTime = 1;
 		State = BUSY;
-		TotalBusyTime++;
+		Pr->set_RT(pSch->get_time_step());
 		return true;
 	}
 	else
 	{
-		return false;
 		IdealTime++;
+		return false;
 	}
 }
 void ProcessorSJF::print_process_inRun()

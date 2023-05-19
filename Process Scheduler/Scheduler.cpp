@@ -211,9 +211,13 @@ void Scheduler::Terminate(Process* P)
 {
 	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
-	if (P->get_child())
+	if (P->get_Lchild())
 	{
-		P->get_child()->get_processor()->TerminateChild(P->get_child()->get_ID());
+		P->get_Lchild()->get_processor()->TerminateChild(P->get_Lchild()->get_ID());
+	}
+	if (P->get_Rchild())
+	{
+		P->get_Rchild()->get_processor()->TerminateChild(P->get_Rchild()->get_ID());
 	}
 	num_terminate++;
 }
@@ -281,7 +285,9 @@ void Scheduler::decrement_num_run()
 }
 void Scheduler::TerminateKilled(Process* P)
 {
+	P->set_TT(TimeStep);
 	Terminated.enqueue(P);
+	num_killed++;
 	num_terminate++;
 }
 void Scheduler::generate_outfile()
@@ -298,27 +304,27 @@ void Scheduler::generate_outfile()
 		Terminated.dequeue(ptr);
 		total_WT += ptr->get_WT();
 		total_RT += ptr->get_RT();
-		total_TRT += ptr->get_TRT();
+		total_TRT+= ptr->get_TRT();
 		out_file << ptr->get_TT() << "       " << ptr->get_ID() << "       " << ptr->get_AT() << "       " << ptr->get_CT() << "       " << ptr->get_IOD() << "       " << ptr->get_WT() << "       " << ptr->get_RT() << "       " << ptr->get_TRT() << endl;
 	}
 	out_file << "Processes: " << num_processes << endl;
 	out_file << "Avg WT = " << total_WT / num_processes << "         " << "Avg RT = " << total_RT / num_processes << "         " << "Avg TRT = " << total_TRT / num_processes << endl;
 	out_file << "Migration % :" << "          " << "RTF = " << RTF << "  ,  " << " MAX W = " << MaxW << endl;
 	out_file << " Work Steal = " << STL << "%" << endl;
-	out_file << " Forked Process = " << (num_forked / num_processes) * 100 << "%" << endl;
-	out_file << "Killed Process = " << (num_killed / num_processes) * 100 << " %" << endl << endl;
+	out_file << " Forked Process = " << ((float)num_forked / num_processes) * 100 << "%" << endl;
+	out_file << "Killed Process = " << ((float)num_killed / num_processes) * 100 << " %" << endl << endl;
 	out_file << "Processors : " << num_processors << " { " << num_FCFS << " FCFS , " << num_SJF << " SJF ," << num_RR << " RR }" << endl;
 	out_file << "Prpcessor Load :" << endl;
 	for (int i = 0; i < num_processors; i++)
 	{
-		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / total_TRT) * 100 << " %      ,      ";
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / (float)total_TRT) * 100 << " %      ,      ";
 	}
 	out_file << endl << "Processors Utiliz " << endl;
 	int total_utlization = 0;
 	for (int i = 0; i < num_processors; i++)
 	{
-		total_utlization += (Processor_ptr[i]->getTotalBusyTime() / (Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100;
-		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / (Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100 << " %      ,      ";
+		total_utlization += (Processor_ptr[i]->getTotalBusyTime() / (float)(Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100;
+		out_file << "P" << i + 1 << " = " << (Processor_ptr[i]->getTotalBusyTime() / (float)(Processor_ptr[i]->getTotalBusyTime() + Processor_ptr[i]->getIdealTime())) * 100 << " %      ,      ";
 	}
 	out_file << "AVG Utlization = " << total_utlization / num_processors << endl;
 }
@@ -354,8 +360,20 @@ void Scheduler:: forK_a_child(Process* P)
 	Process* child = new Process(new_id, TimeStep, P->get_remaining_time());
 	P->set_child(child);
 	Processor* Shortest = get_shortest_FCFS();
-	child->set_processor(Shortest);
-	Shortest->MovetoRDY(child);
+	if (P->get_Lchild())
+	{
+		Process* Rchild = new Process(new_id_R, TimeStep, P->get_remaining_time());
+		P->set_Rchild(Rchild);
+		Rchild->set_processor(Shortest);
+		Shortest->MovetoRDY(Rchild);
+	}
+	else
+	{
+		Process* Lchild = new Process(new_id_L, TimeStep, P->get_remaining_time());
+		P->set_Lchild(Lchild);
+		Lchild->set_processor(Shortest);
+		Shortest->MovetoRDY(Lchild);
+	}
 	num_forked++;
 	num_processes++;
 }
@@ -426,7 +444,7 @@ void Scheduler::from_run_to_blk(Process* P)
 	BLKlist.enqueue(P);
 	if (BLKlist.isEmpty())
 	{
-		currentIOtime = 1;
+		currentIOtime = 0;
 	}
 }
 void Scheduler::from_blk_to_rdy()
@@ -445,6 +463,7 @@ void Scheduler::from_blk_to_rdy()
 		else
 		{
 			currentIOtime++;
+			P->increment_IOD();
 		}
 	}
 }
@@ -465,6 +484,7 @@ void Scheduler::Simulate()
 		u.LoadInterface();
 		TimeStep++;
 	}
+	generate_outfile();
 }
 void Scheduler::sig_kill()
 {

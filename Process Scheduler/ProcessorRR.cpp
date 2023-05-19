@@ -57,8 +57,9 @@ void ProcessorRR::ScheduleAlgo()
 			{
 				RUN->increment_run_time();
 				BusyTime++;
-				TotalBusyTime++;
+				ExpTime--;
 			}
+			TotalBusyTime++;
 			return;
 		}
 	}
@@ -110,7 +111,7 @@ void ProcessorRR::MovetoRDY(Process* P)
 }
 Process* ProcessorRR::RemoveRun()
 {
-	ExpTime -= RUN->get_CT();
+	ExpTime -= (RUN->get_CT() - BusyTime);
 	Process* temp = RUN;
 	RUN = nullptr;
 	pSch->decrement_num_run();
@@ -142,13 +143,13 @@ bool ProcessorRR::fromRDY_to_run()
 		BusyTime = 1;
 		pSch->increment_num_run();
 		State = BUSY;
-		TotalBusyTime++;
+		Pr->set_RT(pSch->get_time_step());
 		return true;
 	}
 	else
 	{
-		return false;
 		IdealTime++;
+		return false;
 	}
 }
 void ProcessorRR::print_process_inRun()

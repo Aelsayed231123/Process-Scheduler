@@ -9,7 +9,8 @@ Process::Process(int id, int arrT, int cpuT, int n, mypair<int, int>* P) :pID(id
 	WT = -1;
 	RunTime = 0;
 	IOD = 0;
-	Childptr = nullptr;
+	LChildptr = nullptr;
+	RChildptr = nullptr;
 	Pr = nullptr;
 	Child = false;
 	for (int i = 0; i < N; i++)
@@ -26,7 +27,11 @@ void Process::set_TT(int terT)
 {
 	TT = terT;
 	TRT = TT - AT;
+	if (TRT < 0)
+		TRT = 0;
 	WT = TRT - CT;
+	if (WT < 0)
+		WT = 0;
 }
 int Process::get_ID()
 {
@@ -56,9 +61,13 @@ int Process::get_WT()
 {
 	return WT;
 }
-void Process::set_child(Process* c)
+void Process::set_Lchild(Process* c)
 {
-	Childptr = c;
+	LChildptr = c;
+}
+void Process::set_Rchild(Process* c)
+{
+	RChildptr = c;
 }
 bool Process::request_IO()
 {
@@ -99,9 +108,13 @@ int Process::get_remaining_time()
 {
 	return(CT - RunTime);
 }
-Process* Process::get_child()
+Process* Process::get_Lchild()
 {
-	return Childptr;
+	return LChildptr;
+}
+Process* Process::get_Rchild()
+{
+	return RChildptr;
 }
 void Process::set_processor(Processor* P)
 {
@@ -144,4 +157,8 @@ void Process::RemoveCurrentIOpair()
 {
 	mypair<int, int>IOpair;
 	IOqueue.dequeue(IOpair);
+}
+void Process::increment_IOD()
+{
+	IOD++;
 }
