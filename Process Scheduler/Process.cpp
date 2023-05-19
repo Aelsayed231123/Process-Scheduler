@@ -93,7 +93,7 @@ int  Process::getRunTime()
 }
 bool Process::isDone()
 {
-	return(RunTime == CT);
+	return(RunTime >= CT);
 }
 int Process::get_remaining_time()
 {

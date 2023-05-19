@@ -1,12 +1,12 @@
 #include "ProcessorSJF.h"
 #include"Scheduler.h"
 #include"Process.h"
-ProcessorSJF::ProcessorSJF(Scheduler* pS):Processor(pS)
+ProcessorSJF::ProcessorSJF(Scheduler* pS) :Processor(pS)
 {
 }
 void ProcessorSJF::MovetoRDY(Process* P)
 {
-	Ready.enqueue(P,P->get_CT());
+	Ready.enqueue(P, P->get_CT());
 	ExpTime += P->get_CT();
 	if (P == RUN)
 	{
@@ -25,14 +25,14 @@ void ProcessorSJF::ScheduleAlgo()
 			pSch->Terminate(RemoveRun());
 			fromRDY_to_run();
 		}
-		if (isBusy())
+		else if (isBusy())
 		{
 			if (RUN->request_IO())
 			{
 				pSch->from_run_to_blk(RemoveRun());
 				fromRDY_to_run();
 			}
-			else if(isBusy())
+			if (isBusy())
 			{
 				RUN->increment_run_time();
 				TotalBusyTime++;
@@ -57,7 +57,7 @@ Process* ProcessorSJF::RemoveFromRDY()
 		return First;
 	}
 }
-Process*  ProcessorSJF::RemoveRun()
+Process* ProcessorSJF::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
@@ -104,4 +104,10 @@ void ProcessorSJF::print_process_inRun()
 {
 	if (RUN)
 		cout << *RUN;
+}
+Process* ProcessorSJF::get_first()
+{
+	Process* first = nullptr;
+	Ready.peek(first);
+	return first;
 }

@@ -33,8 +33,8 @@ public:
 	void Print_Processes_inRun();
 	void Print_Processes_trem();
 	void Print_Processes_blk();
-	bool MigrateRRSJF(Process* P);
-	bool MigrateFCFSRR(Process* P);
+	bool MigrateRRSJF(Processor* Pr);
+	bool MigrateFCFSRR(Processor* Pr);
 	void WorkSteal();
 	int get_num_run();
 	int get_num_blk();
@@ -53,6 +53,7 @@ public:
 	Processor* get_longest();
 	void from_run_to_blk(Process*P);
 	void from_blk_to_rdy();
+	void sig_kill();
 
 };
 #endif

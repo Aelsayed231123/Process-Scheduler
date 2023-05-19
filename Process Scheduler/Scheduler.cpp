@@ -159,20 +159,20 @@ void Scheduler::LoadInputs()
 		finput.ignore(100000000, '\n');
 	}
 }
-bool Scheduler::MigrateRRSJF(Process* P)
+bool Scheduler::MigrateRRSJF(Processor* Pr)
 {
 	Processor* Shortest = get_shortest_SJF();
 	if (Shortest == nullptr)
 		return false;
-	Shortest->MovetoRDY(P);
+	Shortest->MovetoRDY(Pr->RemoveRun());
 	return true;
 }
-bool Scheduler::MigrateFCFSRR(Process* P)
+bool Scheduler::MigrateFCFSRR(Processor* Pr)
 {
 	Processor* Shortest = get_shortest_RR();
 	if (Shortest == nullptr)
 		return false;
-	Shortest->MovetoRDY(P);
+	Shortest->MovetoRDY(Pr->RemoveRun());
 	return true;
 }
 //Called Each STL time ( Time step % STL == 0 )
@@ -184,15 +184,15 @@ void Scheduler::WorkSteal()
 	float Steallimit = (Longest->getExpTime() - Shortest->getExpTime()) / float(Longest->getExpTime());
 	while (Steallimit > 0.4)
 	{
-		Longest->
 		Process* Stolen;
-		Stolen = Longest->RemoveFromRDY();
+		Stolen = Longest->get_first();
 		if (Stolen != nullptr)
 		{
 			if (Stolen->IsChild())
 			{
 				continue;
 			}
+			Stolen = Longest->RemoveFromRDY();
 			Shortest->MovetoRDY(Stolen);
 		}
 		else
@@ -209,12 +209,12 @@ void Scheduler::movetoBLK(Processor* Pr)
 }
 void Scheduler::Terminate(Process* P)
 {
+	P->set_TT(TimeStep);
+	Terminated.enqueue(P);
 	if (P->get_child())
 	{
 		P->get_child()->get_processor()->TerminateChild(P->get_child()->get_ID());
 	}
-	P->set_TT(TimeStep);
-	Terminated.enqueue(P);
 	num_terminate++;
 }
 void Scheduler::movetoRDY(Process* p, Processor* pu)
@@ -324,12 +324,14 @@ void Scheduler::generate_outfile()
 }
 void Scheduler::forK_a_child(Process* P)
 {
-	int new_id = num_processes + P->get_ID();
+	int new_id = P->get_ID()*10;
 	Process* child = new Process(new_id, TimeStep, P->get_remaining_time());
 	P->set_child(child);
-	get_shortest_FCFS()->MovetoRDY(P);
-	P->set_processor(get_shortest_FCFS());
+	Processor* Shortest = get_shortest_FCFS();
+	child->set_processor(Shortest);
+	Shortest->MovetoRDY(child);
 	num_forked++;
+	num_processes++;
 }
 int Scheduler::get_fork_probability()
 {
@@ -347,7 +349,7 @@ Processor* Scheduler::get_shortest_FCFS()
 }
 Processor* Scheduler::get_shortest_SJF()
 {
-	if (num_RR == 0)
+	if (num_SJF == 0)
 		return nullptr;
 	Processor* ShortestSJF = Processor_ptr[num_RR];
 	for (int i = num_RR + 1; i < num_RR + num_SJF; i++)
@@ -359,7 +361,7 @@ Processor* Scheduler::get_shortest_SJF()
 }
 Processor* Scheduler::get_shortest_RR()
 {
-	if (num_SJF == 0)
+	if (num_RR == 0)
 		return nullptr;
 	Processor* ShortestRR = Processor_ptr[0];
 	for (int i = 1; i < num_RR; i++)
@@ -428,8 +430,29 @@ void Scheduler::Simulate()
 	while (num_terminate < num_processes)
 	{
 		Schedule();
+		sig_kill();
+		if ((TimeStep % STL)==0)
+		{
+			WorkSteal();
+		}
 		from_blk_to_rdy();
 		u.LoadInterface();
 		TimeStep++;
+	}
+}
+void Scheduler::sig_kill()
+{
+	mypair<int, int>killpair;
+	if (sigKILL.peek(killpair))
+	{
+		if (TimeStep == killpair.first)
+		{
+			sigKILL.dequeue(killpair);
+			for (int i = num_SJF + num_RR; i< num_SJF + num_RR + num_FCFS;i++)
+			{
+				if (Processor_ptr[i]->Kill(killpair.second))
+					break;
+			}
+		}
 	}
 }

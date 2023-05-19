@@ -17,7 +17,7 @@ void ProcessorRR::ScheduleAlgo()
 			fromRDY_to_run();
 			CheckMigration();
 		}
-		if (isBusy())
+		else if (isBusy())
 		{
 			if (RUN->request_IO())
 			{
@@ -25,7 +25,7 @@ void ProcessorRR::ScheduleAlgo()
 				fromRDY_to_run();
 				CheckMigration();
 			}
-			if (isBusy()&&(BusyTime == TimeSlice))
+			else if (isBusy() && (BusyTime == TimeSlice))
 			{
 				Process* R = RemoveRun();
 				MovetoRDY(R);
@@ -36,13 +36,12 @@ void ProcessorRR::ScheduleAlgo()
 			{
 				CheckMigration();
 			}
-			else if(isBusy())
+			if (isBusy())
 			{
 				RUN->increment_run_time();
 				BusyTime++;
+				TotalBusyTime++;
 			}
-			if(isBusy())
-			TotalBusyTime++;
 			return;
 		}
 	}
@@ -53,8 +52,10 @@ void ProcessorRR::CheckMigration()
 {
 	while (RUN != nullptr && (RUN->get_remaining_time() < pSch->get_RTF()) && !(RUN->IsChild()))
 	{
-		pSch->MigrateRRSJF(RemoveRun());
-		fromRDY_to_run();
+		if (pSch->MigrateRRSJF(this))
+			fromRDY_to_run();
+		else
+			break;
 	}
 }
 Process* ProcessorRR::RemoveFromRDY()
@@ -75,7 +76,7 @@ int ProcessorRR::getExpTime()
 {
 	return ExpTime;
 }
-void ProcessorRR:: MovetoRDY(Process* P)
+void ProcessorRR::MovetoRDY(Process* P)
 {
 	RDY.enqueue(P);
 	ExpTime += P->get_CT();
@@ -87,7 +88,7 @@ void ProcessorRR:: MovetoRDY(Process* P)
 		State = IDLE;
 	}
 }
-Process*  ProcessorRR::RemoveRun()
+Process* ProcessorRR::RemoveRun()
 {
 	ExpTime -= RUN->get_CT();
 	Process* temp = RUN;
@@ -134,4 +135,10 @@ void ProcessorRR::print_process_inRun()
 {
 	if (RUN)
 		cout << *RUN;
+}
+Process* ProcessorRR::get_first()
+{
+	Process* first;
+	RDY.peek(first);
+	return first;
 }

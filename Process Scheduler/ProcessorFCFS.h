@@ -20,5 +20,6 @@ public:
 	bool Fork(int fp);
 	bool TerminateChild(int id);
 	void print_process_inRun();
+	Process* get_first();
 };
 #endif

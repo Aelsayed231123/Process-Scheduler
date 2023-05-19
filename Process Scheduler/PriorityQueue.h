@@ -91,7 +91,7 @@ public:
 			return false;
 		}
 
-		frntEntry = frontPtr->getItem();
+		frntEntry = frontPtr->getItem().first;
 		return true;
 	}
 	~PriorityQueue()

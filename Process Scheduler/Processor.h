@@ -34,6 +34,7 @@ public:
 	bool Busymorethan1();
 	virtual bool Kill(int id);
 	virtual bool TerminateChild(int id);
+	virtual Process* get_first() = 0;
 
 };
 #endif
